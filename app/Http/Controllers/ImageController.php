@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Image;
+use App\Product;
 use Illuminate\Http\Request;
 
 class ImageController extends Controller
@@ -14,7 +15,9 @@ class ImageController extends Controller
      */
     public function index()
     {
-        //
+        $image = Image::paginate(7);
+        $product = Product::select('id','name')->get();
+        return view('admin.listImage',compact('image','product'));
     }
 
     /**
@@ -35,7 +38,9 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data =$request->file('image');
+       
+        return Response()->json($data);
     }
 
     /**
