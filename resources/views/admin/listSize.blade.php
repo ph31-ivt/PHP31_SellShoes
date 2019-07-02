@@ -37,14 +37,13 @@
         </div>
 
 
-<div class="col-sm-12" id="table_Cate">
+<div class="col-sm-12" >
 	<div class="container-fluid category">
-		<table class="table" >
+		<table class="table" id="table_Cate">
             <thead>
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th></th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -82,9 +81,14 @@
 					<div class="row">
 						<div class="container "><h4 class="modal-title">Create Size</h4></div>
 					</div>
-						<div class="row notification">
+						<div class="row notificationS">
 							<div class="container-fluid">
-								<div class="alert alert-success mess"></div>
+								<div class="alert alert-success messS"></div>
+							</div>
+						</div>
+						<div class="row notificationE">
+							<div class="container-fluid">
+								<div class="alert alert-danger messE"></div>
 							</div>
 						</div>
 				</div>
@@ -92,7 +96,7 @@
 			</div>
 			<div class="modal-body">
 
-				<form method="post">
+				<form method="post" >
 					@csrf
 					<fieldset class="form-group">
 						<label for="formGroupExampleInput">Size Name<small>*</small></label>
@@ -121,9 +125,14 @@
 					<div class="row">
 						<div class="container "><h4 class="modal-title">Edit Size</h4></div>
 					</div>
-						<div class="row notification">
+						<div class="row notificationS">
 							<div class="container-fluid">
-								<div class="alert alert-success mess"></div>
+								<div class="alert alert-success messS"></div>
+							</div>
+						</div>
+						<div class="row notificationE">
+							<div class="container-fluid">
+								<div class="alert alert-danger messE"></div>
 							</div>
 						</div>
 				</div>

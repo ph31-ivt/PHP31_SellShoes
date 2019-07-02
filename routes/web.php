@@ -49,6 +49,7 @@ Route::group(['prefix'=>'admin'],function(){
 	//promotion
 	Route::resource('promotion','PromotionController');
 	Route::get('promotion/show/{id}','PromotionController@ShowInfo');
+	Route::get('promotion/ShowInfo/{id}','PromotionController@ShowInfoAll');
 
 	//product
 	Route::resource('product','ProductController');
@@ -57,12 +58,6 @@ Route::group(['prefix'=>'admin'],function(){
 	Route::get('product/search','ProductController@Search');
 	Route::PUT('/product/updateQuantity/{id}','ProductController@UpdateQuantity');
 
-
-	Route::get('/test',function(){
-
-		$size =\App\Size::all();
-		$product =\App\Product::first();
-		$product->sizes()->sync([1=>['quantity'=>2]]);
-
-	});
+	//images
+	Route::resource('image','ImageController');
 });

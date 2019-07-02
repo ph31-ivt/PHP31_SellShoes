@@ -11,8 +11,7 @@ $(document).ready(function(){
 	$('.notification').hide();
 
 	$('#save').click(function(e){
-		// e.preventDefault();
-		console.log('alo');
+		e.preventDefault();
 		$('.notification').show();
 		$.ajax({
 			url:'/admin/category',
@@ -22,17 +21,15 @@ $(document).ready(function(){
 				'name':$('input[name="name"]').val()
 			},
 			success:function(data){
-
-				
-
-
-
-
-
 				console.log(data);
-				var mess = data['message'];
-				$('.mess').html(mess);
-				
+				if(data != undefined && data.errors != undefined){
+					$.each(data.errors,function(key,value){
+						$('.notification').show();
+						$('.mess').append(value);
+					});
+				}else{
+					alert(data['dataSuccess']);
+				}
 			},
 			error:function(error){
 				$('.mess').html("ERROR!!!");
@@ -48,11 +45,8 @@ $(document).ready(function(){
 	});  
 	// end add
 
-	function fetch(curent){
-		
-	}
-
-	$('.delete_Cate').click(function(e){
+	// start delete category
+	$(document).on('click','.delete_Cate',function(e){
 		e.preventDefault();
 		var curent =$(this);
 		if(confirm("Bạn có muốn xóa?")){
@@ -63,36 +57,12 @@ $(document).ready(function(){
 				dataType:'json',
 				data:{},
 				success:function(data){
-					// var out='<table class="table" id="table_Cate"><thead><tr><td width="25%">#</td><td width="25%">Name</td><td width="25%">Delete</td><td width="25%">Update</td> </tr></thead><tbody>';
-					// var dl=data['data'];
-					
-					// for (var i = 0; i < dl.length; i++) {
-					// 	out+='<tr><td>'+dl[i]["id"]+'</td><td>'+dl[i]["name"]+'</td><td><a class="btn btn-danger delete_Cate" data-id="'+dl[i]["id"]+'">Delete</a></td><td><a href=""  data-id="'+dl[i]["id"]+'" data-name="'+dl[i]["name"]+'" data-target="#myModal2" data-toggle="modal" class="btn btn-info rounded-pill edit_Cate">Edit</a></td></tr>';
-					// }
-
-     //       			 out+='</tbody> </table>';
-
-
-
-					// console.log(data);
 					var mess = data['message'];
-					// $('.mess').html(mess);
 					alert(mess);
 					$("#table_Cate").load(" #table_Cate");
-					// $("#table_Cate").load(" #tableCateBody");
-					// $(".delete_Cate").load(" .delete_Cate");
 					$("#pageAdd").load(" #pageAdd");
-					// $('.category').html(out);
-
-
-
-
-					// location.reload('#table_Cate');
-					// $(".delete_Cate").load(" .delete_Cate");
-					// $("#table_Cate").load();
 				},
 				error:function(error){
-					// $('.mess').html(error);
 					alert("ERROR!!!");
 				}
 			});
@@ -102,35 +72,8 @@ $(document).ready(function(){
 
 	});
 
-	function fetchData(){
-		console.log('al;o');
-		$.ajax({
-			url:'/admin/category/show',
-			type:"GET",
-			dataType:'json',
-			data:{
-				// 'name':$('input[name="name"]').val()
-			},
-			success:function(data){
-				console.log(data);
-				$('.category').html(data['content']);
-				
-			},
-			error:function(error){
-				$('.mess').html("ERROR!!!");
-			}
-
-
-		});
-	};
-
-		
-
-
-
-
-
-		$('.edit_Cate').on("click", function(){
+		// start edit category
+		$(document).on("click",'.edit_Cate', function(){
 			var id = $(this).attr("data-id");
 			console.log(id);
 			var name = $(this).attr("data-name");
@@ -138,8 +81,6 @@ $(document).ready(function(){
 			$('input[name="name"]').val(name);
 
 			$('#save_Edit_Cate').on("click", function(){
-			// var form_data = $(this).serialize();
-			// console.log(form_data);
 				$.ajax({
 					url:'/admin/category/'+id,
 					type:'PUT',
@@ -148,70 +89,22 @@ $(document).ready(function(){
 						'name': $('#ediCate').val(),
 					},
 					success:function(data){
-						$('.notification').show();
-						// console.log(data);
-						var mess = data['message'];
-						$('.mess').html(mess);
+						if(data !=undefined && data.errors !=undefined){
+							$.each(data.errors,function(key,value){
+								$('.notification').show();
+								$('.mess').append(value);
+							});
+						}else{
+							alert(data['dataSuccess']);
+						}
 						$("#table_Cate").load(' #table_Cate');
-						// location.reload()
 					}
 				});
 
 		});
 
-		$("#close_Edit").on("click", function(){
-			id=null;
-		});
-
-
 	});
 
 
-	
-
 });
-
-
-
-
-
-
-// $(document).ready(function(){
-// 	$.ajaxSetup({
-
-// 		headers:
-// 		{
-// 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr("content")
-// 		}
-// 	});
-
-// 	$('.notification').hide();
-
-// 	$('.delete_Cate').click(function(e){
-// 		e.preventDefault();
-// 		console.log('alo');
-// 		// $('.notification').show();
-// 		var id =$(this).attr("data-id");
-// 		console.log(id);
-// 		if(confirm("Bạn có muốn xóa?")){
-// 			$.ajax({
-// 				url:'/admin/category/'+id,
-// 				type: 'DELETE',
-// 				dataType:'json',
-// 				data:{},
-// 				success:function(data){
-// 					console.log(data);
-// 					// var mess = data['message'];
-// 					// $('.mess').html(mess);
-// 					// alert(mess);
-// 					// $("#table_Cate").load("  #table_Cate");
-// 				},
-// 				error:function(error){
-// 					$('.mess').html(error);
-// 				}
-// 			});
-// 		}
-
-// 	});
-// });
 

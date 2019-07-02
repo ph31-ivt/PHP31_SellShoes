@@ -69,7 +69,7 @@ $(document).ready(function(){
 	});
 
 
- 	$('.listUser #delete').click(function(e){
+ 	$(document).on('click','.deleteUser',function(e){
 			e.preventDefault();
 			
 			var urlDelete = $(this).attr("data-url");

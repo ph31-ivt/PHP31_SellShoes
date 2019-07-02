@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Size;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Product;
 
 class SizeController extends Controller
 {
@@ -36,9 +38,23 @@ class SizeController extends Controller
      */
     public function store(Request $request)
     {
-        $size = Size::firstOrCreate($request->all());
-
-        return Response()->json($size);
+        $data = $request->all();
+        $name=$request->get('name');
+        $check=Size::where('name','=',$name)->first();
+        $validator=Validator::make($data,[
+            'name'=>'required'
+        ]);
+        if($validator->fails()){
+             return Response()->json(['errors'=>$validator->errors()->all()]);
+        }
+       if(empty($check)){
+            Size::create($data);
+            $result=['datasuccess'=>'Create Success!!!'];
+        }else{
+            $result=['datasuccess'=>'Data Already Exists!!!'];
+        }  
+        
+        return Response()->json($result);
     }
 
     /**
@@ -73,14 +89,22 @@ class SizeController extends Controller
     public function update(Request $request, $id)
     {
         $size = Size::findOrFail($id);
+        $nameUpdate = $request->get('name');
+        $validator = Validator::make($request->all(),[
+            'name'=>'required'
+        ]);
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()->all()]);
+        }
+
         $name = Size::where('name','=',$request->name)->where('id','<>',$id)->first();
         if(!empty($name)){
-            $result=['message'=>'Update False!!!'];
+            $result=['errors'=>'Data Already Exists!!!'];
         }else{
             if($size->update(['name'=>$request->name])){
-                $result=['message'=>'Update Success!!!'];
+                $result=['datasuccess'=>'Update Success!!!'];
             }else{
-               $result=['message'=>'Update False!!!'];
+               $result=['errors'=>'Update False!!!'];
             }
         }
         return response()->json($result);
@@ -95,7 +119,11 @@ class SizeController extends Controller
     public function destroy($id)
     {
         $size = Size::findOrFail($id);
+        // $product;
         if($size->delete()){
+            $product = Product::where('size_id','=',$id);
+            $product->delete();
+            $size->products()->sync([]);
             $result=['message'=>"Delete Success!!!"];
         }else{
             $result =['message'=>'Delete False!!!'];

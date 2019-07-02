@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Brand;
 use Illuminate\Http\Request;
-
+use Validator;
 class BrandController extends Controller
 {
     /**
@@ -35,15 +35,26 @@ class BrandController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   $dt = $request->all();
-        $data =Brand::where('name','=',$request->name)->first();
-        if(empty($data)){
-            $brand =Brand::create($dt);
-            $result = ['message'=>'Create Success!!'];
+    { 
+        $validator = Validator::make($request->all(),[
+            'name'=>'required'
+        ],
+        [
+            'name.required'=>'Brand name not null!'
+        ]);
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()->all()]);
         }else{
-            $result = ['message'=>'Create False!!'];
+            $dt = $request->all();
+            $data =Brand::where('name','=',$request->name)->first();
+            if(empty($data)){
+                $brand =Brand::create($dt);
+                $result = ['success'=>'Create Success!'];
+            }else{
+                $result = ['success'=>'Brand Already Exists!'];
+            }
+            return response()->json($result);
         }
-        return response()->json($result);
     }
 
     /**
@@ -76,20 +87,29 @@ class BrandController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $data = Brand::findOrFail($id);
-        $name = Brand::where('name','=',$request->name)->where('id','<>',$id)->first();
-        if(!empty($name)){
-            $result=['message'=>'Update False!!!'];
+    {   $validator = Validator::make($request->all(),[
+            'name'=>'required'
+        ],
+        [
+            'name.required'=>'Brand name not null!'
+        ]);
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()->all()]);
         }else{
-            if($data->update(['name'=>$request->name,'description'=>$request->description])){
-                $result=['message'=>'Update Success!!!'];
+            $data = Brand::findOrFail($id);
+            $name = Brand::where('name','=',$request->name)->where('id','<>',$id)->first();
+            if(!empty($name)){
+                $result=['success'=>'Update False!!!'];
             }else{
-               $result=['message'=>'Update False!!!'];
+                if($data->update(['name'=>$request->name,'description'=>$request->description])){
+                    $result=['success'=>'Update Success!!!'];
+                }else{
+                   $result=['success'=>'Update False!!!'];
+                }
             }
+            
+            return response()->json($result);
         }
-        
-        return response()->json($result);
     }
 
     /**
@@ -102,10 +122,13 @@ class BrandController extends Controller
     {
         $brand = Brand::findOrFail($id);
         if($brand->delete()){
+            foreach ($brand->products as $value) {
+                $value->delete();
+            }
             $allBrand = Brand::orderBy('id',"DESC")->get();
-            $result=['message'=>'Delete  Success!!!','data'=>$allBrand];
+            $result=['success'=>'Delete  Success!!!','data'=>$allBrand];
         }else{
-            $result = ['message'=>'Delete False!!!'];
+            $result = ['success'=>'Delete False!!!'];
         }
         return response()->json($result);
     }
