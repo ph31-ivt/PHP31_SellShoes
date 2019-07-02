@@ -1,0 +1,45 @@
+{
+	padding:0;
+	margin: 0;
+}
+
+.createUser form small{
+	font-weight: bold;
+	font-size: 20px;
+	color: red;
+	margin-left: 5px;
+}
+
+.breadcrumbs ol li i{
+	font-size: 25px;
+	margin-right: 5px;
+	color: blue;
+
+}
+
+.breadcrumbs #numberUser{
+	font-weight: bold;
+	color: red;
+}
+
+.breadcrumbs form input[type="button"]{
+	width: 50px;
+	height: 30px;
+	/*border-radius: 03px;*/
+	
+}
+
+#myModal form small, #myModal2 form small,#myModal3 form small{
+	font-size: 20px;
+	color: red;
+	margin-left: 5px;
+	font-weight: bold;
+}
+
+.category .notification{
+	width: 100%;
+}
+
+.category .page{
+	width: 100%;
+}
