@@ -25,7 +25,6 @@
 </style>
 @endsection
 
-
 @section('content')
 <div class="breadcrumbs d-flex align-items-center">
             <div class="col-sm-3">

@@ -60,4 +60,6 @@ Route::group(['prefix'=>'admin'],function(){
 
 	//images
 	Route::resource('image','ImageController');
+	Route::get('image/show/{id}','ImageController@ShowInfo');
+	Route::post('image/upload/{id}','ImageController@UpLoadImage');
 });

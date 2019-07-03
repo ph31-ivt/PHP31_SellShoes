@@ -208,6 +208,7 @@ class ProductController extends Controller
             $product->promotion()->delete();
             $product->sizes()->detach();
             $product->promotion()->delete();
+            $product->images()->delete();
             $result=['message'=>'Delete Success!!!'];
         }
         return Response()->json($result);
