@@ -65,11 +65,11 @@
 
 
                     <h3 class="menu-title">Management</h3><!-- /.menu-title -->
-                    <li class="menu-item-has-children dropdown">
+                   <!--  <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-users mr-5"></i>User</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fas fa-user-plus"></i><a href="{{route('user.create')}}">Create User</a></li>
-                            <li><i class="fas fa-user-friends"></i><a href="{{route('user.index')}}">List Users</a></li>
+                            <li><i class="fas fa-user-friends"></i><a href="{{route('user.index')}}">List Users</a></li> -->
                             <!-- <li><i class="fa fa-bars"></i><a href="ui-tabs.html">Tabs</a></li>
                             <li><i class="fa fa-share-square-o"></i><a href="ui-social-buttons.html">Social Buttons</a></li>
                             <li><i class="fa fa-id-card-o"></i><a href="ui-cards.html">Cards</a></li>
@@ -79,8 +79,8 @@
                             <li><i class="fa fa-book"></i><a href="ui-switches.html">Switches</a></li>
                             <li><i class="fa fa-th"></i><a href="ui-grids.html">Grids</a></li>
                             <li><i class="fa fa-file-word-o"></i><a href="ui-typgraphy.html">Typography</a></li> -->
-                        </ul>
-                    </li>
+                      <!--   </ul>
+                    </li> -->
                    <!--  <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-list-alt mr-5"></i>Category</a>
                         <ul class="sub-menu children dropdown-menu">
@@ -88,6 +88,9 @@
                             <li><i class="fas fa-list"></i><a href="tables-data.html">List Category</a></li>
                         </ul>
                     </li> -->
+                     <li class="menu-item-has-children ">
+                        <a href="{{route('user.index')}}" class="dropdown-toggle" ><i class="fas fa-list mr-5"></i>Users</a>
+                    </li>
                      <li class="menu-item-has-children ">
                         <a href="{{route('category.index')}}" class="dropdown-toggle" ><i class="fas fa-list mr-5"></i>Categories</a>
                     </li>
@@ -102,6 +105,9 @@
                     </li>
                     <li class="menu-item-has-children ">
                         <a href="{{route('product.index')}}" class="dropdown-toggle" ><i class="fas fa-list mr-5"></i>Products</a>
+                    </li>
+                     <li class="menu-item-has-children ">
+                        <a href="{{route('image.index')}}" class="dropdown-toggle" ><i class="fas fa-list mr-5"></i>Images</a>
                     </li>
                    <!--  <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-box mr-5"></i>Products</a>

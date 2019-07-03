@@ -9,8 +9,11 @@
 <script src="/js/app.js"></script>
 <script src="/js/promotion.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+ <script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script> -->
 <link rel="stylesheet" href="/css/admin.css">
 @endsection
 
@@ -40,19 +43,26 @@
 		<table class="table" >
             <thead>
                 <tr>
-                    <th width="10%">#</th>
-                    <th width="35%">Name</th>
-                    <th width="35%">Product ID</th>
-                    <th width="20%">Action</th>
+                    <th >#</th>
+                    <th >Name</th>
+                    <th >Product</th>
+                    <th >Action</th>
                 </tr>
             </thead>
             <tbody >
                 @foreach($promotion as $value)
 					<tr>
-						<td >{{$value->id}}</td>
-						<td >{{$value['name']}}</td>
-						<td >{{$value->product->name}}</td>
-						<td >
+						<td width="10%">{{$value->id}}</td>
+						<td width="35%">
+							<a href="" class="hover" promotionId="{{$value->id}}">
+							{{$value['name']}}
+						</a>
+						</td>
+						<td width="35%"><a href="" class="hover" promotionId="{{$value->id}}">
+							{{$value->product->name}}
+						</a>
+						</td>
+						<td width="20%">
 							<a class="btn btn-danger delete_Cate" data-id="{{$value->id}}">Delete</a>
 							 <a href=""  data-id="{{$value->id}}" data-target="#myModal2" data-toggle="modal" class="btn btn-info rounded-pill edit_Cate">Edit</a>
 						</td>
@@ -82,7 +92,7 @@
 					</div>
 						<div class="row notification">
 							<div class="container-fluid">
-								<div class="alert alert-success mess"></div>
+								<div class="alert alert-danger mess"></div>
 							</div>
 						</div>
 				</div>

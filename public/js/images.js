@@ -8,36 +8,37 @@ $(document).ready(function(){
 		}
 	});
 
-	$('.notificationS').hide();
-	$('.notificationE').hide();
+	$('.notification').hide();
 
 	$('#save').click(function(e){
 		// e.preventDefault();
 		// console.log('alo');
 		
 		$.ajax({
-			url:'/admin/size',
+			url:'/admin/image',
 			type:"POST",
 			dataType:'json',
 			data:{
-				'name':$('input[name="name"]').val()
+				'name':$('#formImage input[name="name"]').val(),
+				'image':$('#formImage input[name="image"]').val(),
+				'product_id':$('#formImage select[name="name"]').val()
 			},
 			success:function(data){
 				console.log(data);
-				if(data != undefined && data.errors !=undefined ){
-					$.each(data['errors'], function(key, value){
-						$('.notificationE').show();
-						$('.notificationS').hide();
-						$('.messE').append(value);
-					});
-				}
-				if(data != undefined && data.datasuccess != undefined){
-					$.each(data['datasuccess'], function(key, value){
-						$('.notificationS').show();
-						$('.notificationE').hide();
-						$('.messS').append(value);
-					});
-				}
+				// if(data != undefined && data.errors !=undefined ){
+				// 	$.each(data['errors'], function(key, value){
+				// 		$('.notificationE').show();
+				// 		$('.notificationS').hide();
+				// 		$('.messE').append(value);
+				// 	});
+				// }
+				// if(data != undefined && data.datasuccess != undefined){
+				// 	$.each(data['datasuccess'], function(key, value){
+				// 		$('.notificationS').show();
+				// 		$('.notificationE').hide();
+				// 		$('.messS').append(value);
+				// 	});
+				// }
 				
 			
 
@@ -84,7 +85,6 @@ $(document).ready(function(){
 
 	// end delete
 	
-
 
 
 		$(document).on('click','.edit_Cate' ,function(){

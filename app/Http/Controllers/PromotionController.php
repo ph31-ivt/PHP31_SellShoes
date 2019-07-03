@@ -5,9 +5,19 @@ namespace App\Http\Controllers;
 use App\Promotion;
 use App\Product;
 use Illuminate\Http\Request;
-
+use Validator;
 class PromotionController extends Controller
 {
+
+    public function ShowInfoAll($id){
+        $promotion=Promotion::find($id);
+        // foreach ($promotion->product as $value) {
+        //    $nameProduct = $value->name;
+        // }
+        // ['data'=>$promotion,'nameProduct'=>$nameProduct]
+        return response()->json($promotion);
+    }
+
     public function ShowInfo($id){
         $promotion =Promotion::findOrFail($id);
         return response()->json($promotion);
@@ -42,9 +52,36 @@ class PromotionController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $promotion = Promotion::firstOrCreate(['name'=>$request->get('name'),'product_id'=>$request->product_id],$data);
-        return response()->json($promotion);
+        $validator = Validator::make($request->all(),[
+            'name'=>'required',
+            'code'=>'required',
+            'unit'=>'required',
+            'start'=>'required',
+            'end'=>'required',
+            'product_id'=>'required'
+        ],[
+            'name.required'=>'Promotion name not null!',
+            'code.required'=>'Code not null!',
+            'unit.required'=>'Unit not null!',
+            'start.required'=>'Start day not null!',
+            'end.required'=>'End day not null!',
+            'product_id.required'=>'Product_id not null!',
+        ]);
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()->all()]);
+        }else{
+            $data = $request->all();
+            $productId = Promotion::Where('product_id','=',$request->get('product_id'))->where('name','=',$request->get('name'))->first();
+            if(!empty($productId)){
+                $result = ['dataSuccess'=>'Product ID Already Exists!'];
+            }else{
+                $promotion = Promotion::create($data);
+                $result = ['dataSuccess'=>'Promotion Create Success!'];
+            }
+           
+            return response()->json($result);
+        }
+        
     }
 
     /**
@@ -79,15 +116,41 @@ class PromotionController extends Controller
      */
     public function update(Request $request,$id)
     {
-        $promotion = Promotion::findOrFail($id);
-        $data=$request->all();
-        if($promotion->update($data)){
-            $result = ['message'=>"Update Success!!!"];
+         $validator = Validator::make($request->all(),[
+            'name'=>'required',
+            'code'=>'required',
+            'unit'=>'required',
+            'start'=>'required',
+            'end'=>'required',
+            'product_id'=>'required'
+        ],[
+            'name.required'=>'Promotion name not null!',
+            'code.required'=>'Code not null!',
+            'unit.required'=>'Unit not null!',
+            'start.required'=>'Start day not null!',
+            'end.required'=>'End day not null!',
+            'product_id.required'=>'Product_id not null!',
+        ]);
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()->all()]);
         }else{
-             $result = ['message'=>"Update False!!!"];
-        }
+            $promotion = Promotion::findOrFail($id);
+            $data=$request->all();
+            $check = Promotion::where('name','=',$request->get('name'))->where('product_id','<>',$id)->first();
+            if(empty($check)){
+                if($promotion->update($data)){
+                    $result = ['message'=>"Update Success!"];
+                }else{
+                     $result = ['message'=>"Update False!"];
+                }
+            }else{
+                 $result = ['message'=>"Promotion Already Exists!"];
+            }
+            
 
-        return response()->json($result);
+            return response()->json($result);
+        }
+        
     }
 
     /**
@@ -100,9 +163,9 @@ class PromotionController extends Controller
     {
         $promotion=Promotion::findOrFail($id);
         if($promotion->delete()){
-            $result = ['message'=>"Delete Success!!!"];
+            $result = ['message'=>"Delete Promotion Success!!!"];
         }else{
-             $result = ['message'=>"Delete False!!!"];
+             $result = ['message'=>"Delete Promotion False!!!"];
         }
        
         

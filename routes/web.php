@@ -46,28 +46,10 @@
 // 	Route::resource('size','SizeController');
 
 
-// 	//promotion
-// 	Route::resource('promotion','PromotionController');
-// 	Route::get('promotion/show/{id}','PromotionController@ShowInfo');
-
-// 	//product
-// 	Route::resource('product','ProductController');
-// 	Route::get('product/editPro/{id}','ProductController@ShowInfo');
-// 	Route::get('product/popover/{id}','ProductController@ShowPopover');
-// 	Route::get('product/search','ProductController@Search');
-// 	Route::PUT('/product/updateQuantity/{id}','ProductController@UpdateQuantity');
-
-
-// 	Route::get('/test',function(){
-
-// 		$size =\App\Size::all();
-// 		$product =\App\Product::first();
-// 		$product->sizes()->sync([1=>['quantity'=>2]]);
-
-// 	});
-// });
-
 //Show page index
 Route::get('index', 'User\PageController@index')->name('index-page');
 
 Route::get('contact', 'User\PageController@showContactPage')->name('contact-page');
+
+
+

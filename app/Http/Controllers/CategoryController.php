@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
-
+use Validator;
 class CategoryController extends Controller
 {
 
@@ -40,21 +40,28 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // $create = Category::firstOrCreate(['name'=>$name]);
-        
-
-        
-        $data = $request->all();
-        $name = $request->get('name');
-        $find = Category::where('name','=',$name)->first();
-        if(empty($find)){
-            $cate = Category::create($data);
-            $result = ['data'=>$cate,'message'=>'Create Category Success','status'=>200];
-        }else{
-            $result=['message'=>"Create Category false"];
+        $validator = Validator::make($request->all(),[
+            'name'=>'required'
+        ],[
+            'name.required'=>'Category name not null!'
+        ]);
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()->all()]);
+        }
+        else{
+            $data = $request->all();
+            $name = $request->get('name');
+            $find = Category::where('name','=',$name)->first();
+            if(empty($find)){
+                $cate = Category::create($data);
+                $result = ['dataSuccess'=>'Create Category Success!'];
+            }else{
+                $result=['dataSuccess'=>"Category Already Exists!"];
+            }
+            
+            return response()->json($result);
         }
         
-        return response()->json($result,200);
     }
 
     /**
@@ -90,15 +97,22 @@ class CategoryController extends Controller
     {
         $name = $request->all();
         $Cate = Category::findOrFail($id);
-        // $Cate->name=$name;
-
-        if($Cate->update($name)){
-           
-            $result = ['message'=>"Update Success!!!"];
+        $validator = Validator::make($request->all(),[
+            'name'=>'required'
+        ],[
+            'name.required'=>'Category name not null!'
+        ]);
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()->all()]);
         }else{
-            $result=['message'=>'Update False!!!'];
+            if($Cate->update($name)){
+                $result = ['dataSuccess'=>"Update Success!!!"];
+            }else{
+                $result=['dataSuccess'=>'Update False!!!'];
+            }
+            return response()->json($result);
         }
-        return response()->json($result);
+        
     }
 
     /**
@@ -111,7 +125,10 @@ class CategoryController extends Controller
     {
         $cate = Category::findOrFail($id);
         if($cate->delete()){
-             $listCategory = Category::all();
+            foreach ($cate->products as $value) {
+               $value->delete();
+            }
+            $listCategory = Category::all();
             $result = ['message'=>'Xóa thành công!!!','data'=>$listCategory];
         }else{
             $result = ['message'=>'Xóa thất bại!!!'];
