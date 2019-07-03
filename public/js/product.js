@@ -213,11 +213,41 @@ $(document).ready(function(){
 			type:'GET',
 			data:{},
 			success:function(data){
+				console.log(data);
 				dataShow=data;
 			}
 		});
 		return dataShow;
 	}
+
+	fetchDataSearch();
+
+	// start search
+
+	function fetchDataSearch(value=''){
+		$.ajax({
+			url:'/admin/product/searchPoduct',
+			type:'POST',
+			dataType:'json',
+			data:{
+				'value':value
+			},
+			success:function(data){
+				console.log(data);
+			}
+		});
+
+	}
+
+	$(document).on('keyup','#search',function(){
+		var value = $(this).val();
+		fetchDataSearch(value);
+	});
+
+
+
+
+
 
 
 
@@ -229,38 +259,38 @@ $(document).ready(function(){
 		// 	dataTokenizer: Bloodhound.tokenizers.whitespace('value'),
 		// 	queryTokenizer: Bloodhound.tokenizers.whitespace
 		// });
-		var bloodhound = new Bloodhound({
-                remote: {
-                    url: '/admin/product/search?value=%QUERY%',
-                    wildcard: '%QUERY%'
-                },
-                datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
-    			queryTokenizer: Bloodhound.tokenizers.whitespace
-            });
+		// var bloodhound = new Bloodhound({
+  //               remote: {
+  //                   url: '/admin/product/search?value=%QUERY%',
+  //                   wildcard: '%QUERY%'
+  //               },
+  //               datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
+  //   			queryTokenizer: Bloodhound.tokenizers.whitespace
+  //           });
 
-		$('#search').typeaheader({
-			hint:true,
-			highlight:true,
-			minLenght:1
-		},{
+		// $('#search').typeaheader({
+		// 	hint:true,
+		// 	highlight:true,
+		// 	minLenght:1
+		// },{
 
-			source: bloodhound.ttAdapter(),
-			name: 'product-search',
-			display: function(data){
-				return data.name;
-			},
-                templates: {
-                    empty: [
-                        '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
-                    ],
-                    header: [
-                        '<div class="list-group search-results-dropdown">'
-                    ],
-                    suggestion: function(data) {
-                    return '<div style="font-weight:normal; margin-top:-10px ! important;" class="list-group-item">' + data.name + '</div></div>'
-                    }
-                }
-		});
+		// 	source: bloodhound.ttAdapter(),
+		// 	name: 'product-search',
+		// 	display: function(data){
+		// 		return data.name;
+		// 	},
+  //               templates: {
+  //                   empty: [
+  //                       '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
+  //                   ],
+  //                   header: [
+  //                       '<div class="list-group search-results-dropdown">'
+  //                   ],
+  //                   suggestion: function(data) {
+  //                   return '<div style="font-weight:normal; margin-top:-10px ! important;" class="list-group-item">' + data.name + '</div></div>'
+  //                   }
+  //               }
+		// });
 
 });
 

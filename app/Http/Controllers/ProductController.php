@@ -12,6 +12,38 @@ use Validator;
 class ProductController extends Controller
 {
 
+    public function SearchProduct(Request $request){
+        $out ="";
+        $value = $request->get('value');
+        if(!empty($value)){
+            $product = Product::where('name','like','%'.$value.'%')->orWhere('status','like','%'.$value.'%')->orWhere('price','like','%'.$value.'%')->get();
+        }else{
+            $product= $product=Product::orderBy('id','DESC')->paginate(7);
+        }
+
+        $count = $product->count();
+        // if($count>0){
+        //     foreach ($product as $value) {
+        //         $out+='
+        //             <tr>
+        //                 <td width="10%">'.$value->id.'</td>
+        //                 <td width="20%%"><a class="hover" productID="'.$value->id.'">'.$value["name"].'</a></td>
+        //                 <td width="20%"><a class="hover" productID="'.$value->id.'">
+        //                 </a></td>
+        //                 <td width="20%"><a class="hover" productID="'.$value->id.'">'.$value["price"].'</a></td>
+        //                 <td width="30%">
+        //                     <a class="btn btn-danger delete_Cate" data-id="'.$value->id.'">Delete</a>
+        //                      <a href=""  data-id="'.$value->id.'" data-target="#myModal2" data-toggle="modal" class="btn btn-info rounded-pill editPro">Edit</a>
+        //                      <a class="btn btn-success updateQuantity" data-target="#myModal3" data-toggle="modal" data-id="'.$value->id.'">Quantity</a>
+        //                 </td>
+        //             </tr>
+        //         ';
+        //     }
+        // }
+
+        return response()->json($count);
+    }
+
     public function Search(Request $request){
         $product = Product::where('name','LIKE','%'.$request->name.'%')->get();
         return response()->json($product);
@@ -22,8 +54,12 @@ class ProductController extends Controller
         foreach ($info->sizes as $value) {
             $quantity = $value->pivot->quantity;
         }
+       
+        $img = $info->images()->first();
+        $infoImg = $img->path;
         $brand=$info->brand();
-        $out ='<p><lable>Category: '.$info->category->name.'</label></p>
+        $out ='<p><lable><img src="/upImage/'.$infoImg.'" width="100px" height="100px" alt=""></label></p>
+        <p><lable>Category: '.$info->category->name.'</label></p>
          <p><lable>Brand: '.$info->brand->name.'</label></p>
           <p><lable>Quantity: '.$quantity.'</label></p>
          <p><lable>Description: '.$info->description.'</label></p>';
