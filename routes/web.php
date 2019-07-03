@@ -18,51 +18,56 @@
 
 // admin 
 
-Route::group(['prefix'=>'admin'],function(){
+// Route::group(['prefix'=>'admin'],function(){
 
-	Route::get('/home',function(){
-		return view('admin.home');
-	});
+// 	Route::get('/home',function(){
+// 		return view('admin.home');
+// 	});
 
-	Route::get('orderList',function(){
-		return view('admin.orderList');
-	})->name('OrderList');
-
-
-	// user
-	Route::resource('user','UserController');
-	Route::post('/user/search','UserController@search')->name('search');
+// 	Route::get('orderList',function(){
+// 		return view('admin.orderList');
+// 	})->name('OrderList');
 
 
-	//category
-	Route::resource('category','CategoryController');
-	// Route::get('reload','CategoryController@load');
+// 	// user
+// 	Route::resource('user','UserController');
+// 	Route::post('/user/search','UserController@search')->name('search');
 
 
-	Route::resource('brand','BrandController');
+// 	//category
+// 	Route::resource('category','CategoryController');
+// 	// Route::get('reload','CategoryController@load');
 
 
-	// size
-	Route::resource('size','SizeController');
+// 	Route::resource('brand','BrandController');
 
 
-	//promotion
-	Route::resource('promotion','PromotionController');
-	Route::get('promotion/show/{id}','PromotionController@ShowInfo');
-
-	//product
-	Route::resource('product','ProductController');
-	Route::get('product/editPro/{id}','ProductController@ShowInfo');
-	Route::get('product/popover/{id}','ProductController@ShowPopover');
-	Route::get('product/search','ProductController@Search');
-	Route::PUT('/product/updateQuantity/{id}','ProductController@UpdateQuantity');
+// 	// size
+// 	Route::resource('size','SizeController');
 
 
-	Route::get('/test',function(){
+// 	//promotion
+// 	Route::resource('promotion','PromotionController');
+// 	Route::get('promotion/show/{id}','PromotionController@ShowInfo');
 
-		$size =\App\Size::all();
-		$product =\App\Product::first();
-		$product->sizes()->sync([1=>['quantity'=>2]]);
+// 	//product
+// 	Route::resource('product','ProductController');
+// 	Route::get('product/editPro/{id}','ProductController@ShowInfo');
+// 	Route::get('product/popover/{id}','ProductController@ShowPopover');
+// 	Route::get('product/search','ProductController@Search');
+// 	Route::PUT('/product/updateQuantity/{id}','ProductController@UpdateQuantity');
 
-	});
-});
+
+// 	Route::get('/test',function(){
+
+// 		$size =\App\Size::all();
+// 		$product =\App\Product::first();
+// 		$product->sizes()->sync([1=>['quantity'=>2]]);
+
+// 	});
+// });
+
+//Show page index
+Route::get('index', 'User\PageController@index')->name('index-page');
+
+Route::get('contact', 'User\PageController@showContactPage')->name('contact-page');
