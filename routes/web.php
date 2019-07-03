@@ -57,9 +57,15 @@ Route::group(['prefix'=>'admin'],function(){
 	Route::get('product/popover/{id}','ProductController@ShowPopover');
 	Route::get('product/search','ProductController@Search');
 	Route::PUT('/product/updateQuantity/{id}','ProductController@UpdateQuantity');
+	Route::POST('product/searchPoduct','ProductController@SearchProduct');
 
 	//images
 	Route::resource('image','ImageController');
 	Route::get('image/show/{id}','ImageController@ShowInfo');
 	Route::post('image/upload/{id}','ImageController@UpLoadImage');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+

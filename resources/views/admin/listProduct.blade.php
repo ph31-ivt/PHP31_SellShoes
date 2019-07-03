@@ -35,14 +35,10 @@
                 </div>
             </div>
             <div class="col-sm-6">
-            	<div class="container">
-            		<div class="row">
-            			<form class="form-inline navbar-form search" >
-            				@csrf
-        					<input class="form-control" id="search" type="text" name="search" placeholder="Search" width="100%" autocomplete="off">
-        				</form>
-            		</div>
-            	</div>
+            	<form action="">
+            		@csrf
+        			<input class="form-control" id="search" type="text" name="search" placeholder="Search..." width="100%" autocomplete="off">
+            	</form>
             </div>
             <div class="col-sm-3">
                 <div class="page-header float-right">
