@@ -120,7 +120,7 @@
                         <a href="#" class="dropdown-toggle" ><i class="fas fa-list mr-5"></i>Order List</a>
                     </li>
                      <li class="menu-item-has-children ">
-                        <a href="#" class="dropdown-toggle" ><i class="fas fa-list mr-5"></i>Comment List</a>
+                        <a href="{{route('comments.index')}}" class="dropdown-toggle" ><i class="fas fa-list mr-5"></i>Comment List</a>
                     </li>
                      <li class="menu-item-has-children ">
                         <a href="#" class="dropdown-toggle" ><i class="fas fa-list mr-5"></i>Favorite List</a>

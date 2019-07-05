@@ -13,18 +13,24 @@ class ProductController extends Controller
 {
 
     public function SearchProduct(Request $request){
-        $out ="";
         $value = $request->get('value');
+        $out="";
         if(!empty($value)){
             $product = Product::where('name','like','%'.$value.'%')->orWhere('status','like','%'.$value.'%')->orWhere('price','like','%'.$value.'%')->get();
+            $out='<ul class="dropdown-menu" style="display:block;position:relative">';
+            foreach ($product as $dl) {
+                $out.='<li><a href="#">'.$dl->name.'</a></li>';
+            }
+            $out.='</ul>';
+            // echo $out;
         }else{
             $product= $product=Product::orderBy('id','DESC')->paginate(7);
         }
 
-        $count = $product->count();
+        // $count = $product->count();
         // if($count>0){
         //     foreach ($product as $value) {
-        //         $out+='
+        //         $out.='
         //             <tr>
         //                 <td width="10%">'.$value->id.'</td>
         //                 <td width="20%%"><a class="hover" productID="'.$value->id.'">'.$value["name"].'</a></td>
@@ -41,7 +47,7 @@ class ProductController extends Controller
         //     }
         // }
 
-        return response()->json($count);
+        return response()->json($out);
     }
 
     public function Search(Request $request){
@@ -244,6 +250,7 @@ class ProductController extends Controller
             $product->promotion()->delete();
             $product->sizes()->detach();
             $product->promotion()->delete();
+            $product->userComments()->detach();
             $product->images()->delete();
             $result=['message'=>'Delete Success!!!'];
         }

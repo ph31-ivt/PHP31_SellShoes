@@ -4,7 +4,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<!-- <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.0.min.js"></script> -->
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.0.min.js"></script>
 
 <script src="/js/app.js"></script>
 <script src="/js/product.js"></script>
@@ -34,13 +34,16 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-            	<form action="">
-            		@csrf
-        			<input class="form-control" id="search" type="text" name="search" placeholder="Search..." width="100%" autocomplete="off">
-            	</form>
+            <div class="col-sm-6 ">
+            	<div class="container box">
+            		<form>
+	            		@csrf
+	        			<input class="form-control" id="search" type="text" name="search" placeholder="Search..." width="100%">
+	        			<div id="searchProduct"></div>
+	            	</form>
+            	</div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3 ">
                 <div class="page-header float-right">
                     <div class="page-title ">
                         <ol class="breadcrumb  text-right">

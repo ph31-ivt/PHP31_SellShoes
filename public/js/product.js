@@ -213,35 +213,48 @@ $(document).ready(function(){
 			type:'GET',
 			data:{},
 			success:function(data){
-				console.log(data);
 				dataShow=data;
 			}
 		});
 		return dataShow;
 	}
 
-	fetchDataSearch();
+	
 
 	// start search
+	// fetchDataSearch();
+	// function fetchDataSearch(value=''){
+	// 	$.ajax({
+	// 		url:'/admin/product/searchPoduct',
+	// 		type:'post',
+	// 		dataType:'json',
+	// 		data:{
+	// 			'value':value
+	// 		},
+	// 		success:function(data){
+	// 			console.log(data);
+	// 		}
+	// 	});
 
-	function fetchDataSearch(value=''){
+	// }
+
+	$(document).on('keyup','#search',function(){
+		var value = $(this).val();
+		console.log(value);
+		// fetchDataSearch(value);
 		$.ajax({
 			url:'/admin/product/searchPoduct',
-			type:'POST',
+			type:'post',
 			dataType:'json',
 			data:{
 				'value':value
 			},
 			success:function(data){
 				console.log(data);
+				$('#searchProduct').fadeIn();
+				$('#searchProduct').html(data);
 			}
 		});
-
-	}
-
-	$(document).on('keyup','#search',function(){
-		var value = $(this).val();
-		fetchDataSearch(value);
 	});
 
 
