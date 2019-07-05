@@ -31,4 +31,8 @@ class Product extends Model
     public function images(){
         return $this->hasMany('App\Image');
     }
+
+    public function userComments(){
+        return $this->belongsToMany('App\User','comments','product_id','user_id')->withPivot('rate','content','status')->withTimestamps();
+    }
 }

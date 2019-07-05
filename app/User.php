@@ -40,7 +40,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function role(){
-        // return $this->belongsTo()
+    public function productComments(){
+        return $this->belongsToMany('App\Product','comments','user_id','product_id')->withPivot('rate','content','status')->withTimestamps();
     }
 }
