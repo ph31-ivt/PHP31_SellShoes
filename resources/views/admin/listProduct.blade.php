@@ -35,10 +35,10 @@
                 </div>
             </div>
             <div class="col-sm-6 ">
-            	<div class="container box">
+            	<div class="container box" style="position: absolute;">
             		<form>
 	            		@csrf
-	        			<input class="form-control" id="search" type="text" name="search" placeholder="Search..." width="100%">
+	        			<input class="form-control" style="margin-top: -20px;" id="search" type="text" placeholder="Search..." width="100%">
 	        			<div id="searchProduct"></div>
 	            	</form>
             	</div>
@@ -67,7 +67,7 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody >
+            <tbody>
                 @foreach($product as $value)
 					<tr>
 						<td width="10%">{{$value->id}}</td>

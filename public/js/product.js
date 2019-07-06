@@ -205,7 +205,6 @@ $(document).ready(function(){
 	function fetchData(){
 		var dataShow = "";
 		var id = $(this).attr('productID');
-		console.log(id);
 		$.ajax({
 			url:'/admin/product/popover/'+id,
 			dataType:'json',
@@ -238,10 +237,9 @@ $(document).ready(function(){
 
 	// }
 
+	// load product search
 	$(document).on('keyup','#search',function(){
 		var value = $(this).val();
-		console.log(value);
-		// fetchDataSearch(value);
 		$.ajax({
 			url:'/admin/product/searchPoduct',
 			type:'post',
@@ -252,11 +250,35 @@ $(document).ready(function(){
 			success:function(data){
 				console.log(data);
 				$('#searchProduct').fadeIn();
-				$('#searchProduct').html(data);
+				$('#table_Cate').html(data);
 			}
 		});
 	});
 
+	// search direct product
+	$(document).on('keyup','#search',function(){
+		var data = $(this).val();
+		$.ajax({
+			url:'/admin/product/searchPoductQuickly',
+			type:'post',
+			dataType:'json',
+			data:{
+				'value':value
+			},
+			success:function(data){
+				console.log(data);
+				$('#searchProduct').fadeIn();
+				$('#searchProduct').html(data);
+				// $('#table_Cate').html(data);
+			}
+		});
+	});
+
+	$(document).on('click','li',function(){
+		$('#search').val($(this).text());
+		$('#searchProduct').fadeOut();
+
+	});
 
 
 
