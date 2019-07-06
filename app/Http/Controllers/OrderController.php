@@ -14,7 +14,16 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $order = Order::all();
+        foreach ($order as $key => $value) {
+            $order2=$value->products;
+            foreach ($order2 as $key => $value) {
+            $order3=$value->pivot->status;
+        }
+        }
+         
+        dd($order3);
+        return view('admin.listOrder',compact('order'));
     }
 
     /**

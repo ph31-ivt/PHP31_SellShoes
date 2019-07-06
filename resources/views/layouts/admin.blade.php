@@ -109,15 +109,8 @@
                      <li class="menu-item-has-children ">
                         <a href="{{route('image.index')}}" class="dropdown-toggle" ><i class="fas fa-list mr-5"></i>Images</a>
                     </li>
-                   <!--  <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-box mr-5"></i>Products</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fas fa-plus-square"></i><a href="tables-basic.html">Create Product</a></li>
-                            <li><i class="fas fa-list"></i><a href="{{route('product.index')}}">List Products</a></li>
-                        </ul>
-                    </li> -->
                     <li class="menu-item-has-children ">
-                        <a href="#" class="dropdown-toggle" ><i class="fas fa-list mr-5"></i>Order List</a>
+                        <a href="{{route('orders.index')}}" class="dropdown-toggle" ><i class="fas fa-list mr-5"></i>Order List</a>
                     </li>
                      <li class="menu-item-has-children ">
                         <a href="{{route('comments.index')}}" class="dropdown-toggle" ><i class="fas fa-list mr-5"></i>Comment List</a>
@@ -296,7 +289,7 @@
 
                             <a class="nav-link" href="#"><i class="fa fa-cog"></i> Settings</a>
 
-                            <a class="nav-link" href="#"><i class="fa fa-power-off"></i> Logout</a>
+                            <a class="nav-link" href=""><i class="fa fa-power-off"></i> Logout</a>
                         </div>
                     </div>
 

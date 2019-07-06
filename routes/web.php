@@ -22,7 +22,7 @@ Route::group(['prefix'=>'admin'],function(){
 
 	Route::get('/home',function(){
 		return view('admin.home');
-	});
+	})->name('homeAdmin');
 
 	Route::get('orderList',function(){
 		return view('admin.orderList');
@@ -67,9 +67,17 @@ Route::group(['prefix'=>'admin'],function(){
 	//comments
 	Route::resource('comments','CommentController');
 	Route::post('comments/approve','CommentController@read');
+
+	//order
+	Route::resource('orders','OrderController');
 });
 
-Auth::routes();
+// Auth::routes();
+// Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+	Route::get('login','LoginController@index')->name('formLogin');
+	Route::post('login','LoginController@login')->name('login');
+	Route::get('register','LoginController@create')->name('register');
+	Route::post('register','LoginController@store')->name('registerUser');
 
