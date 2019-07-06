@@ -58,6 +58,7 @@ Route::group(['prefix'=>'admin'],function(){
 	Route::get('product/search','ProductController@Search');
 	Route::PUT('/product/updateQuantity/{id}','ProductController@UpdateQuantity');
 	Route::post('product/searchPoduct','ProductController@SearchProduct');
+	Route::post('product/searchPoductQuickly','ProductController@SearchProductQuickly');
 
 	//images
 	Route::resource('image','ImageController');

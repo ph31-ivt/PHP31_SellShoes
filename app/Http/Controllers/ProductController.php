@@ -12,42 +12,65 @@ use Validator;
 class ProductController extends Controller
 {
 
-    public function SearchProduct(Request $request){
+    public function SearchProductQuickly(Request $request){
         $value = $request->get('value');
         $out="";
         if(!empty($value)){
             $product = Product::where('name','like','%'.$value.'%')->orWhere('status','like','%'.$value.'%')->orWhere('price','like','%'.$value.'%')->get();
-            $out='<ul class="dropdown-menu" style="display:block;position:relative">';
-            foreach ($product as $dl) {
-                $out.='<li><a href="#">'.$dl->name.'</a></li>';
+            $out='<ul class="dropdown-menu fluid" width="100%" style="display:block;position:relative">';
+            $count = count($product);
+            if($count>=1){
+                foreach ($product as $dl) {
+                    $out.='<li width="500px"><a href="#">'.$dl["name"].'</a></li>';
+                }
+                $out.='</ul>';
             }
-            $out.='</ul>';
-            // echo $out;
+        }
+        return response()->json($out);
+    }
+
+    public function SearchProduct(Request $request){
+        $value = $request->get('value');
+        if(!empty($value)){
+            $product = Product::where('name','like','%'.$value.'%')->orWhere('status','like','%'.$value.'%')->orWhere('price','like','%'.$value.'%')->get();
         }else{
             $product= $product=Product::orderBy('id','DESC')->paginate(7);
         }
-
-        // $count = $product->count();
-        // if($count>0){
-        //     foreach ($product as $value) {
-        //         $out.='
-        //             <tr>
-        //                 <td width="10%">'.$value->id.'</td>
-        //                 <td width="20%%"><a class="hover" productID="'.$value->id.'">'.$value["name"].'</a></td>
-        //                 <td width="20%"><a class="hover" productID="'.$value->id.'">
-        //                 </a></td>
-        //                 <td width="20%"><a class="hover" productID="'.$value->id.'">'.$value["price"].'</a></td>
-        //                 <td width="30%">
-        //                     <a class="btn btn-danger delete_Cate" data-id="'.$value->id.'">Delete</a>
-        //                      <a href=""  data-id="'.$value->id.'" data-target="#myModal2" data-toggle="modal" class="btn btn-info rounded-pill editPro">Edit</a>
-        //                      <a class="btn btn-success updateQuantity" data-target="#myModal3" data-toggle="modal" data-id="'.$value->id.'">Quantity</a>
-        //                 </td>
-        //             </tr>
-        //         ';
-        //     }
-        // }
-
-        return response()->json($out);
+        $count = count($product);
+        $outTable='';
+        if($count>=1){
+            $outTable="
+                 <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>";
+            foreach ($product as $key=> $dl) {
+                foreach ($dl->sizes as $key => $value) {
+                    $size = $value->name;
+                }
+                $outTable.="<tr>";
+                $outTable.= '<td width="10%">'.$dl["id"].'</td>';
+                $outTable.= '<td width="20%%"><a class="hover" productID="'.$dl["id"].'">'.$dl['name'].'</a></td>';
+               $outTable.='<td width="20%"><a class="hover" productID="'.$dl['id'].'">
+                           '.$size.'
+                        </a></td>';
+                $outTable.= '<td width="20%"><a class="hover" productID="'.$dl["id"].'">'.$dl['price'].'</a></td>';
+                $outTable.= '<td width="30%">
+                            <a class="btn btn-danger delete_Cate" data-id="'.$dl["id"].'">Delete</a>
+                             <a href=""  data-id="'.$dl["id"].'" data-target="#myModal2" data-toggle="modal" class="btn btn-info rounded-pill editPro">Edit</a>
+                             <a class="btn btn-success updateQuantity" data-target="#myModal3" data-toggle="modal" data-id="'.$dl["id"].'">Quantity</a>
+                        </td>';
+                $outTable.="</tr>";
+            }
+        }
+        $outTable.="</tbody>";
+        return response()->json($outTable);
     }
 
     public function Search(Request $request){
@@ -60,16 +83,25 @@ class ProductController extends Controller
         foreach ($info->sizes as $value) {
             $quantity = $value->pivot->quantity;
         }
-       
         $img = $info->images()->first();
         $infoImg = $img->path;
         $brand=$info->brand();
-        $out ='<p><lable><img src="/upImage/'.$infoImg.'" width="100px" height="100px" alt=""></label></p>
-        <p><lable>Category: '.$info->category->name.'</label></p>
-         <p><lable>Brand: '.$info->brand->name.'</label></p>
-          <p><lable>Quantity: '.$quantity.'</label></p>
-         <p><lable>Description: '.$info->description.'</label></p>';
+        if(!empty($infoImg)){
+            $out='<p><lable><img src="/upImage/'.$infoImg.'" width="100px"height="100px" alt=""></label></p>
+                <p><lable>Category: '.$info->category->name.'</label></p>
+                <p><lable>Brand: '.$info->brand->name.'</label></p>
+                <p><lable>Quantity: '.$quantity.'</label></p>
+                <p><lable>Description: '.$info->description.'</label></p>';
+           
+        }
+        if(empty($infoImg)){
+            $out='<p><lable>Category: '.$info->category->name.'</label></p>
+                <p><lable>Brand: '.$info->brand->name.'</label></p>
+                <p><lable>Quantity: '.$quantity.'</label></p>
+                <p><lable>Description: '.$info->description.'</label></p>';
+        }
         return Response()->json($out);
+        
     }
 
     public function UpdateQuantity(Request $request,$id){
