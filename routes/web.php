@@ -82,3 +82,18 @@ Route::group(['prefix'=>'admin'],function(){
 	Route::get('register','LoginController@create')->name('register');
 	Route::post('register','LoginController@store')->name('registerUser');
 
+
+
+
+	Route::group(['prefix'=>'user'],function(){
+
+		// Route::get('home',function(){
+		// 	return view('user.home');
+		// });
+		Route::resource('page','LoadPageController');
+		Route::post('search','LoadPageController@search');
+
+
+
+
+	});

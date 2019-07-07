@@ -205,6 +205,7 @@ $(document).ready(function(){
 	function fetchData(){
 		var dataShow = "";
 		var id = $(this).attr('productID');
+		console.log(id);
 		$.ajax({
 			url:'/admin/product/popover/'+id,
 			dataType:'json',
