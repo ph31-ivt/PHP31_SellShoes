@@ -12,9 +12,6 @@ $(document).ready(function(){
 	$('.notificationE').hide();
 
 	$('#save').click(function(e){
-		// e.preventDefault();
-		// console.log('alo');
-		
 		$.ajax({
 			url:'/admin/size',
 			type:"POST",
@@ -31,11 +28,12 @@ $(document).ready(function(){
 						$('.messE').append(value);
 					});
 				}
+				alert(data.datasuccess);
 				if(data != undefined && data.datasuccess != undefined){
 					$.each(data['datasuccess'], function(key, value){
-						$('.notificationS').show();
+						$('.notificationS').hide();
 						$('.notificationE').hide();
-						$('.messS').append(value);
+
 					});
 				}
 				
