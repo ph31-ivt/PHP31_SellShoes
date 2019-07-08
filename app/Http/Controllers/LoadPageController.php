@@ -8,6 +8,24 @@ use App\Size;
 use App\Product;
 class LoadPageController extends Controller
 {
+
+    // Giá tiền khi thay đổi số lượng
+    public function showPrice(Request $request){
+        $data = $request->get('quantity');
+        $id = $request->get('id');
+        $quantity = Product::findOrFail($id)->price;
+        // if($data>1){
+            $out = $quantity*$data;
+        // }else{
+            // $out = $quantity;
+        // }
+        return response()->json($out);
+    }
+
+
+
+
+    // tìm kiếm sản phẩm
     public function search(Request $request){
         $data = $request->get('value');
         if(!empty($data)){
@@ -28,7 +46,7 @@ class LoadPageController extends Controller
                         <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
                         <div class="block-4 text-center border">
                         <figure class="block-4-image" data-id="'.$value->id.'">
-                            <a href="shop-single.html"><img src="http://phpshoes.com/upImage/'.$img.'" alt="Image placeholder" class="img-fluid"></a>
+                            <a href="http://phpshoes.com/user/showDetail/'.$value->id.'"><img src="http://phpshoes.com/upImage/'.$img.'" alt="Image placeholder" class="img-fluid"></a>
                         </figure>
                         <div class="block-4-text p-4">
                           <h3><a href="shop-single.html" data-id="'.$value->id.'">'.$value->name.'</a></h3>
@@ -43,6 +61,12 @@ class LoadPageController extends Controller
             $out.='<p>Sản phẩm này không được tìm thấy!</p>';
         }
         return response()->json($out);
+    }
+
+    // start show detail product
+    public function showDetail($id){
+        $product=Product::find($id);
+        return view('user.detailProduct',compact('product'));
     }
     /**
      * Display a listing of the resource.

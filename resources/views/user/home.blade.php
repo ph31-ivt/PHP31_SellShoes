@@ -9,6 +9,22 @@
 @endsection
 
 @section('content')
+<div class="bg-light py-3">
+      <div class="container">
+        <div class="row">
+          <div class="container d-flex justify-content-center">
+             <form action="" style="width: 600px;">
+                @csrf
+                <input type="text" class="form-control" name="search" id="search" placeholder="Search...">
+            </form>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+
+
+
 <div class="site-section">
       <div class="container">
         <div class="row mb-5">
@@ -19,12 +35,12 @@
                   <div class="block-4 text-center border">
                     <figure class="block-4-image">
                       @foreach($value->images as $val)
-                        <a href="shop-single.html"><img src='{{asset("/upImage/$val->path")}}' alt="Image placeholder" class="img-fluid"></a>
+                        <a href='{{route("showDetail",$value->id)}}'><img src='{{asset("/upImage/$val->path")}}' alt="Image placeholder" class="img-fluid"></a>
                         @break
                        @endforeach
                     </figure>
                     <div class="block-4-text p-4">
-                      <h3><a href="shop-single.html">{{$value->name}}</a></h3>
+                      <h3><a href='{{route("showDetail",$value->id)}}'>{{$value->name}}</a></h3>
                       <p class="text-primary font-weight-bold">{{$value->price}} vnđ</p>
                     </div>
                   </div>
