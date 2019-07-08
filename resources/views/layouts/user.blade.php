@@ -59,19 +59,7 @@
       
     </header>
 
-    <div class="bg-light py-3">
-      <div class="container">
-        <div class="row">
-          <div class="container d-flex justify-content-center">
-             <form action="" style="width: 600px;">
-                @csrf
-                <input type="text" class="form-control" name="search" id="search" placeholder="Search...">
-            </form>
-          </div>
-         
-        </div>
-      </div>
-    </div>
+    
     
     @yield('content')
 

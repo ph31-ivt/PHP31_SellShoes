@@ -85,15 +85,17 @@ Route::group(['prefix'=>'admin'],function(){
 
 
 
-	Route::group(['prefix'=>'user'],function(){
 
-		// Route::get('home',function(){
-		// 	return view('user.home');
-		// });
-		Route::resource('page','LoadPageController');
-		Route::post('search','LoadPageController@search');
+Route::group(['prefix'=>'user'],function(){
 
+	// Route::get('home',function(){
+	// 	return view('user.home');
+	// });
+	Route::resource('page','LoadPageController');
+	Route::post('search','LoadPageController@search');
 
+	Route::get('showDetail/{id}','LoadPageController@showDetail')->name('showDetail');
+	// trả về giá moi khi click tăng giảm số lượng
+	Route::post('showPrice','LoadPageController@showPrice');
 
-
-	});
+});
