@@ -6,8 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\SizeRequest;
 use App\Http\Controllers\Auth;
+use Session;
 class LoginController extends Controller
 {
+
+    public function logout(){
+        \Auth::logout();
+        Session()->forget('user.email');
+        // Session()->flush();
+        return redirect()->route('formLogin');
+    }
+
+
     public function login(Request $request){
         $request->validate([
             'email'=>'required|email',
@@ -19,25 +29,42 @@ class LoginController extends Controller
             'password.min'=>"Password cần ít nhất 6 kí tự!",
             'password.max'=>"Password nhiều nhất 12 kí tự!"
         ]);
-        // $data=$request->except('_token','submit');
-        // $password=$request->get('password');
-        // $passwordOld = User::select('password')->where('email','=',$request->get('email'))->get();
+     
         $data = $request->only('email','password');
-        // dd($data);
         if(\Auth::attempt($data)){
-            // $role = User::where('email','=',$request->get('email'))->get();
-            // dd($role);
-            // if($role == 1){
-                return view('welcome');
-            // }
-            // else{
-
-            // }
+            $user = \Auth::user();
+            $role = $user->role_id;
+            $id = $user->id;
+            $request->session()->push('user.email',$id);
+            if($role==1)
+                 return redirect()->route('page.index');
+            if($role==2)
+                return redirect()->route('homeAdmin');
+           
         }else{
-            $loi = "Sai tài khoản hoặc mật khẩu";
-            return view('auth.login',compact('loi'));
+            return redirect()->route('login')->with('error','Sài tài khoản hoặc mật khẩu');
         }
     }
+    // public function loginUser(Request $request){
+    //     $request->validate([
+    //         'email'=>'required|email',
+    //         'password'=>'required|min:6|max:12'
+    //     ],[
+    //         'email.required'=>"Email không được để trống!",
+    //         'password.required'=>"Password không được để trống!",
+    //         'email.email'=>"Cần nhập vào là email!",
+    //         'password.min'=>"Password cần ít nhất 6 kí tự!",
+    //         'password.max'=>"Password nhiều nhất 12 kí tự!"
+    //     ]);
+     
+    //     $data = $request->only('email','password');
+    //     if(\Auth::attempt($data)){
+    //             return redirect()->route('page.index');
+    //     }else{
+    //         $loi = "Sai tài khoản hoặc mật khẩu";
+    //         return view('auth.login',compact('loi'));
+    //     }
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -85,10 +112,9 @@ class LoginController extends Controller
             $data['password']=bcrypt($data['password']);
             $data['role_id']=1;
             User::create($data);
-            return redirect()->route('formLogin');
+            return redirect()->route('login')->with('success','Tài khoản thành công!');
         }else{
-           $loi = "Email đã tồn tại";
-           return view('auth.register',compact('loi'));
+           return redirect()->route('login')->with('error','Email đã tồn tại!');
         }
     }
 

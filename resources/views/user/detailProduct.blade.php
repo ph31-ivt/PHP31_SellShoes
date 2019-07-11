@@ -16,12 +16,11 @@
         </div>
       </div>
     </div>  
-
+    
     <div class="site-section">
       <div class="container">
         <div class="row">
 		<div class="col-sm-6 details">
-
 					<div class="row imgTop">
 						<div class="container imgBox">
 								@foreach($product->images as $val)
@@ -43,29 +42,30 @@
 
 
           <div class="col-md-6">
-            <h2 class="text-black">{{$product['name']}}</h2>
+            <h2 class="text-black nameProduct">{{$product['name']}}</h2>
             <p>{{$product->description}}</p>
             <p><strong class="text-primary h4" id="price">{{$product->price}}</strong> VNĐ</p>
             <div class="mb-1 d-flex">
             	@foreach($product->sizes as $value)
               <label for="option-sm" class="d-flex mr-3 mb-3">
-                <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-sm" name="shop-sizes"></span> <span class="d-inline-block text-black">{{$value->name}}</span>
+                <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-sm" name="size"></span><span class="d-inline-block text-black size">{{$value->name}}</span>
               </label>
              	@endforeach
             </div>
             <div class="mb-5">
               <div class="input-group mb-3" style="max-width: 120px;">
-              <div class="input-group-prepend">
+             <!--  <div class="input-group-prepend">
                 <button class="btn btn-outline-primary js-btn-minus nut" type="button">&minus;</button>
-              </div>
-              <input type="text" class="form-control text-center" value="1" aria-label="Example text with button addon" data-id="{{$product->id}}" id="increase" aria-describedby="button-addon1">
-              <div class="input-group-append">
+              </div> -->
+              <input type="text" class="form-control text-center" value="1" disabled aria-label="Example text with button addon" data-id="{{$product->id}}" id="increase" aria-describedby="button-addon1">
+              <!-- <div class="input-group-append">
                 <button class="btn btn-outline-primary js-btn-plus nut" type="button">&plus;</button>
-              </div>
+              </div> -->
             </div>
 
             </div>
-            <p><a href="#" id="addToCart" class="btn btn-primary">Add To Cart</a></p>
+            <!-- <p><button class="btn-success"  id="addToCart">Add To Cart</button></p> -->
+            <p><a href="#" id="addToCart" class="btn btn-success">Add To Cart</a></p>
           </div>
         </div>
       </div>

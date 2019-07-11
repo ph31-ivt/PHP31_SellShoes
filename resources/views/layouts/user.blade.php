@@ -21,7 +21,6 @@
     @yield('header')
   </head>
   <body>
-  
   <div class="site-wrap">
     <header class="site-navbar" role="banner">
       <div class="site-navbar-top">
@@ -40,12 +39,35 @@
             <div class="col-6 col-md-4 order-3 order-md-3 text-right">
               <div class="site-top-icons">
                 <ul>
-                  <li><a href="#"><span class="icon icon-person"></span></a></li>
-                  <li><a href="#"><span class="icon icon-heart-o"></span></a></li>
+                  @if(Session()->has('user'))
+                    <li><a href="{{route('logout')}}">{{Session::get('name')}} <span class="icon icon-person"></span></a></li>
+                  @endif
+                  
+                  @if(!Session()->has('user'))
+                    <li><a href="{{route('formLogin')}}"><span class="icon icon-person">Login</span></a></li>
+                  @endif
+                  <!-- <li><a href="#"><span class="icon icon-heart-o"></span></a></li> -->
+                  
                   <li>
-                    <a href="cart.html" class="site-cart">
+                    <a href="{{route('cartDetail')}}" class="site-cart">
                       <span class="icon icon-shopping_cart"></span>
-                      <span class="count">2</span>
+                      <span class="count">
+                        <?php 
+                         $id = Session()->get('user.email.0');
+                         $session = Session()->get('user');
+                         foreach ($session as $key => $value) {
+                            if($key==$id){
+                              $cart = $value;
+                            }
+                         }
+                         if(!empty($cart)){
+                           echo  $cartNumber = count($cart['cart']);
+                         }else{
+                          echo '0';
+                         }
+                             
+                        ?>
+                      </span>
                     </a>
                   </li> 
                   <li class="d-inline-block d-md-none ml-md-0"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu"></span></a></li>

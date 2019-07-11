@@ -1,24 +1,7 @@
 <?php
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-
 // admin 
 
-Route::group(['prefix'=>'admin'],function(){
+Route::group(['prefix'=>'admin','middleware'=>['checkLogin','checkAdmin','web']],function(){
 
 	Route::get('/home',function(){
 		return view('admin.home');
@@ -78,24 +61,25 @@ Route::group(['prefix'=>'admin'],function(){
 
 
 	Route::get('login','LoginController@index')->name('formLogin');
+	Route::get('logout','LoginController@logout')->name('logout');
 	Route::post('login','LoginController@login')->name('login');
+	Route::post('loginUser','LoginController@loginUser')->name('loginUser');
 	Route::get('register','LoginController@create')->name('register');
 	Route::post('register','LoginController@store')->name('registerUser');
 
 
 
 
+Route::resource('user/page','LoadPageController');
+	Route::post('user/search','LoadPageController@search');
 
-Route::group(['prefix'=>'user'],function(){
-
-	// Route::get('home',function(){
-	// 	return view('user.home');
-	// });
-	Route::resource('page','LoadPageController');
-	Route::post('search','LoadPageController@search');
-
-	Route::get('showDetail/{id}','LoadPageController@showDetail')->name('showDetail');
+	Route::get('user/showDetail/{id}','LoadPageController@showDetail')->name('showDetail')->middleware('checkLogin');
 	// trả về giá moi khi click tăng giảm số lượng
-	Route::post('showPrice','LoadPageController@showPrice');
+	
 
+Route::group(['prefix'=>'user','middleware'=>['checkLogin','web']],function(){
+	Route::post('showPrice','LoadPageController@showPrice');
+	Route::post('cartShopping','LoadPageController@cartShopping')->name('shopDetail');
+	Route::get('cartDetail','LoadPageController@cartDetail')->name('cartDetail');
+	Route::post('deleteCart','LoadPageController@deleteCart')->name('deleteCart');
 });

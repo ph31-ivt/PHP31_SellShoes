@@ -22,7 +22,6 @@ $(document).ready(function(){
 				'value':value
 			},
 			success:function(data){
-				console.log(data);
 				$('#showProduct').html(data);
 			}
 		});
