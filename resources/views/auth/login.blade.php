@@ -10,7 +10,16 @@
                 <div class="card-body">
                     <form method="POST" action="{{route('login')}}">
                         @csrf
-
+                         @if(session('success'))
+                            <div class="alert alert-success text-center">
+                                  <p>{{ session('success') }}</p>
+                            </div>
+                            @endif
+                        @if(session('error'))
+                             <div class="alert alert-danger text-center">
+                                  <p>{{ session('error') }}</p>
+                            </div>
+                        @endif
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
@@ -42,7 +51,7 @@
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember">
 
                                     <label class="form-check-label" for="remember">
                                         {{ __('Remember Me') }}

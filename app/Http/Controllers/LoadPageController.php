@@ -8,6 +8,62 @@ use App\Size;
 use App\Product;
 class LoadPageController extends Controller
 {
+    // delete product khỏi giỏ hàng
+    public function deleteCart(Request $request){
+        $productID = $request->get('id');
+        $user = \Auth::user();
+        $id = $user->id;
+        $result= Session()->forget('user.'.$id.'.cart.'.$productID);
+        $cart =$request->session()->get('user');
+        foreach ($cart as $key => $value) {
+            if($key == $id){
+                $result = $value;
+            }
+        }
+        $count = count($result['cart']);
+        return response()->json($count);       
+    }
+
+
+
+    // load page cartDetail
+    public function cartDetail(){
+        $user = \Auth::user();
+        $id = $user->id;
+        $product = Session()->get('user');
+        foreach ($product as $key => $value) {
+            if($key == $id){
+                $productID = $value;
+            }
+        }
+        
+        
+        foreach ($productID['cart'] as $key => $value) {
+           $allPro[]= Product::findOrFail($key);
+        }
+        return view('user.cart',compact('allPro'));
+    }
+
+
+    // cartShopping
+    public function cartShopping(Request $request){
+        $user = \Auth::user();
+        $id = $user->id;
+        $idProduct = $request->get('id');
+        $request->session()->push('user.'.$id.'.cart.'.$idProduct.'.nameProduct',$request->get('product'));
+        $request->session()->push('user.'.$id.'.cart.'.$idProduct.'.size',$request->get('size'));
+        $cart =$request->session()->get('user');
+        foreach ($cart as $key => $value) {
+            if($key == $id){
+                $result = $value;
+            }
+        }
+        $count = count($result['cart']);
+        return response()->json($count);
+        
+    }
+
+
 
     // Giá tiền khi thay đổi số lượng
     public function showPrice(Request $request){
