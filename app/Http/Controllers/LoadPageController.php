@@ -8,6 +8,9 @@ use App\Size;
 use App\Product;
 class LoadPageController extends Controller
 {
+    public function checkout(){
+        return view('user.checkout');
+    }
     // delete product khỏi giỏ hàng
     public function deleteCart(Request $request){
         $productID = $request->get('id');
@@ -36,12 +39,16 @@ class LoadPageController extends Controller
                 $productID = $value;
             }
         }
-        
-        
         foreach ($productID['cart'] as $key => $value) {
            $allPro[]= Product::findOrFail($key);
         }
-        return view('user.cart',compact('allPro'));
+        if(empty($allPro)){
+            return view('user.cart');
+        }else{
+            $sizeAll=Size::all();
+            return view('user.cart',compact('allPro','sizeAll'));
+        }
+        
     }
 
 
@@ -50,9 +57,10 @@ class LoadPageController extends Controller
         $user = \Auth::user();
         $id = $user->id;
         $idProduct = $request->get('id');
-        $request->session()->push('user.'.$id.'.cart.'.$idProduct.'.nameProduct',$request->get('product'));
+        // $request->session()->push('user.'.$id.'.cart.'.$idProduct.'.nameProduct',$request->get('product'));
         $request->session()->push('user.'.$id.'.cart.'.$idProduct.'.size',$request->get('size'));
         $cart =$request->session()->get('user');
+         
         foreach ($cart as $key => $value) {
             if($key == $id){
                 $result = $value;

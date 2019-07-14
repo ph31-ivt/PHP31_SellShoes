@@ -18,12 +18,11 @@ class OrderController extends Controller
         foreach ($order as $key => $value) {
             $order2=$value->products;
             foreach ($order2 as $key => $value) {
-            $order3=$value->pivot->status;
-        }
+                $order3=$value->pivot->status;
+            }
         }
          
-        dd($order3);
-        return view('admin.listOrder',compact('order'));
+        return view('admin.listOrder');
     }
 
     /**

@@ -39,9 +39,10 @@ Route::group(['prefix'=>'admin','middleware'=>['checkLogin','checkAdmin','web']]
 	Route::get('product/editPro/{id}','ProductController@ShowInfo');
 	Route::get('product/popover/{id}','ProductController@ShowPopover');
 	Route::get('product/search','ProductController@Search');
-	Route::PUT('/product/updateQuantity/{id}','ProductController@UpdateQuantity');
+	Route::post('product/updateQuantity','ProductController@UpdateQuantity');
 	Route::post('product/searchPoduct','ProductController@SearchProduct');
 	Route::post('product/searchPoductQuickly','ProductController@SearchProductQuickly');
+	// Route::post('product/capnhat','ProductController@capnhat');	
 
 	//images
 	Route::resource('image','ImageController');
@@ -81,5 +82,6 @@ Route::group(['prefix'=>'user','middleware'=>['checkLogin','web']],function(){
 	Route::post('showPrice','LoadPageController@showPrice');
 	Route::post('cartShopping','LoadPageController@cartShopping')->name('shopDetail');
 	Route::get('cartDetail','LoadPageController@cartDetail')->name('cartDetail');
-	Route::post('deleteCart','LoadPageController@deleteCart')->name('deleteCart');
+	Route::post('cartDetail','LoadPageController@deleteCart')->name('deleteCart');
+	Route::get('checkout','LoadPageController@checkout')->name('checkout');
 });

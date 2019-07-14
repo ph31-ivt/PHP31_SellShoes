@@ -37,8 +37,6 @@ $(document).ready(function(){
 					});
 				}
 				
-			
-
 				$("#table_Cate").load(' #table_Cate');
 				$("#pageAdd").load(" #pageAdd");
 			},

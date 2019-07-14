@@ -24,7 +24,7 @@ $(document).ready(function(){
 				'price':$('#addProduct input[name="price"]').val(),
 				'category_id':$('#addProduct select[name="category_id"]').val(),
 				'brand_id':$('#addProduct select[name="brand_id"]').val(),
-				'size_id':$('#addProduct select[name="size_id"]').val(),
+				'size_id':$('#addProduct select[name="size_id[]"]').val(),
 				'quantity':$('#addProduct input[name="quantity"]').val(),
 				'description':$('#addProduct textarea[name="description"]').val(),
 			},
@@ -93,13 +93,11 @@ $(document).ready(function(){
 				dataType:'json',
 				data:{},
 				success:function(data){
-					console.log(data);
 					$('#formEdit input[name="name"]').val(data.data['name']);
 					$('#formEdit input[name="status"]').val(data.data['status']);
 					$('#formEdit input[name="price"]').val(data.data['price']);
 					$('#formEdit input[name="quantity"]').val(data['quantity']);
 					$('#formEdit textarea[name="description"]').val(data.data['description']);
-					$('#formEdit select[name="size_id"]').val(data.data['size_id']);
 					$('#formEdit select[name="brand_id"]').val(data.data['brand_id']);
 					$('#formEdit select[name="category_id"]').val(data.data['category_id']);
 				}
@@ -111,17 +109,17 @@ $(document).ready(function(){
 					type:'PUT',
 					dataType:'json',
 					data:{
+						'id':id,
 						'name':$('#formEdit input[name="name"]').val(),
 						'status':$('#formEdit input[name="status"]').val(),
 						'price':$('#formEdit input[name="price"]').val(),
 						'category_id':$('#formEdit select[name="category_id"]').val(),
 						'brand_id':$('#formEdit select[name="brand_id"]').val(),
-						'size_id':$('#formEdit select[name="size_id"]').val(),
+						'size_id':$('#formEdit select[name="size_id[]"]').val(),
 						'quantity':$('#formEdit input[name="quantity"]').val(),
 						'description':$('#formEdit textarea[name="description"]').val(),
 					},
 					success:function(data){
-						console.log(data);
 						if(data !=undefined && data.errors != undefined){
 							$.each(data.errors,function(key,value){
 								$('.notification').show();
@@ -151,30 +149,30 @@ $(document).ready(function(){
 	$(document).on('click','.updateQuantity',function(){
 		$('.notification').hide();
 		var id =$(this).attr("data-id");
-		console.log(id);
+		var size_id;
 		$.ajax({
 			url:'/admin/product/editPro/'+id,
 			type:'GET',
 			dataType:'json',
 			data:{},
 			success:function(data){
-				console.log(data);
-				$('#formUpdate input[name="name"]').val(data.data['name']);
-				$('#formUpdate input[name="quantity"]').val(data['quantity']);
-				$('#formUpdate select[name="size_id"]').val(data.data['size_id']);
+				// console.log(data);
+				$('#formUpdateQuantity input[name="name"]').val(data.data['name']);
+				$('#formUpdateQuantity input[name="quantity"]').val(data['quantity']);
+				size_id = data['size'];
 			}
 		});
-		$('#updateQuantity').click(function(){
+		$('#updateQuantity').on('click',function(){
 			if(confirm('Bạn có muốn thêm số lượng?')){
 			$.ajax({
-				url:'/admin/product/updateQuantity/'+id,
-				type:'PUT',
+				url:'/admin/product/updateQuantity',
+				type:'post',
 				dataType:'json',
 				data:{
-					'name':$('#formUpdate input[name="name"]').val(),
-					'quantity':$('#formUpdate input[name="quantity"]').val(),
-					'size_id':$('#formUpdate select[name="size_id"]').val()
-				},
+					'id':id,
+					'quantity':$('#formUpdateQuantity input[name="quantity"]').val(),
+					'size_id':size_id
+				},	
 				success:function(data){
 					console.log(data);
 					if(data != undefined && data.errors != undefined){

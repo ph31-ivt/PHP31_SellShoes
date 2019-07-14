@@ -104,7 +104,9 @@ class ProductController extends Controller
         
     }
 
-    public function UpdateQuantity(Request $request,$id){
+    public function UpdateQuantity(Request $request){
+        $id = $request->get('id');
+        $size_id = $request->get('size_id');
         $validator=Validator::make($request->all(),[
             'quantity'=>'required|numeric'
         ],
@@ -117,13 +119,16 @@ class ProductController extends Controller
         }else{
             $info=Product::findOrFail($id);
             $data = $request->get('quantity');
-            $size_id = $request->get('size_id');
             foreach ($info->sizes as $value) {
                 $old = $value->pivot->quantity;
+                $size[]= $value->id;
             }
             $quantity = $old+$data;
             if($info){
-                $info->sizes()->sync([$size_id=>['quantity'=>$quantity]]);
+                foreach ($size_id as $key => $value) {
+                   $size[$value]=['quantity'=>$quantity];
+                }
+                    $info->sizes()->sync($size);
                 $result=['dataSuccess'=>'Update Quantity Success!'];
             }else{
                  $result=['dataSuccess'=>'Update Quantity False!'];
@@ -134,11 +139,12 @@ class ProductController extends Controller
 
     public function ShowInfo($id){
         $info = Product::find($id);
-        // $size_id = Product::only('size_id');
        foreach ($info->sizes as $value) {
           $quantity = $value->pivot->quantity;
+            $size[] = $value->id;
+
        }
-        return Response()->json(['data'=>$info,'quantity'=>$quantity]);
+        return response()->json(['data'=>$info,'quantity'=>$quantity,'size'=>$size]);
     }
     /**
      * Display a listing of the resource.
@@ -172,9 +178,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->except('quantity');
+        $data = $request->except('quantity','size_id');
         $quantity = $request->get('quantity');
-        $size_id = $request->get('size_id');
+        $size_id= $request->get('size_id');
 
         $validator = Validator::make($request->all(),[
             'name'=>'required',
@@ -192,9 +198,12 @@ class ProductController extends Controller
         if($validator->fails()){
             return response()->json(['errors'=>$validator->errors()->all()]);
         }else{
-            $check = Product::where('name','=',$request->get('name'))->where('size_id','=',$size_id)->first();
-            if(empty($check)){
-                Product::create($data)->sizes()->sync([$size_id=>['quantity'=>$quantity]]);
+            $check = Product::where('name','=',$request->get('name'))->first();
+            if(!$check){
+                foreach ($size_id as $key => $value) {
+                    $size[$value]= ['quantity'=>$quantity];
+                }
+                Product::create($data)->sizes()->sync($data); 
                 $result = ['dataSuccess'=>'Create Product Success!!!'];
             }else{
                 $result = ['dataSuccess'=>'Product Already Exists!!!'];
@@ -202,7 +211,6 @@ class ProductController extends Controller
             return Response()->json($result);
         }
 
-        
     }
 
     /**
@@ -257,8 +265,11 @@ class ProductController extends Controller
             $product = Product::findOrFail($id);
             $size_id = $request->get('size_id');
             $quantity = $request->get('quantity');
+            foreach ($size_id as $key => $value) {
+                $size[$value]=['quantity'=>$quantity];
+            }
             if($product->update($data)){
-                $product->sizes()->sync([$size_id=>['quantity'=>$quantity]]);
+                $product->sizes()->sync($size);
                 $result=["message"=>'Update Success!!!'];
             }else{
                 $result=["message"=>'Update False!!!'];
@@ -288,4 +299,41 @@ class ProductController extends Controller
         }
         return Response()->json($result);
     }
+
+    // public function capnhat(Request $request){
+    //     $id = $request->get('id');
+    //     $validator = Validator::make($request->all(),[
+    //         'name'=>'required',
+    //         'price'=>'required|numeric',
+    //         'description'=>'required',
+    //         'quantity'=>'required|numeric'
+
+    //     ],
+    //     [
+    //         'name.required'=>'Tên sản phẩm không được để trống!',
+    //         'price.required'=>'Giá sản phẩm không được để trống!',
+    //         'description.required'=>"Mô tả sản phẩm không được để trống!",
+    //         'quantity.required'=>'Giá sản phẩm không được để trống!'
+    //     ]);
+
+    //     if($validator->fails()){
+    //         return response()->json(['errors'=>$validator->errors()->all()]);
+    //     }else{
+    //         $data = $request->except('quantity');
+    //         $product = Product::findOrFail($id);
+    //         $size_id = $request->get('size_id');
+    //         $quantity = $request->get('quantity');
+    //           foreach ($size_id as $key => $value) {
+    //             $size[$value]=['quantity'=>$quantity];
+    //         }
+    //         if($product->update($data)){
+    //            $product->sizes()->sync($size);
+    //             $result=["message"=>'Update Success!!!'];
+    //         }else{
+    //             $result=["message"=>'Update False!!!'];
+    //         }
+    //         return Response()->json($size);
+    //     }
+    // }
+
 }

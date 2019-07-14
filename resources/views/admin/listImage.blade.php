@@ -40,7 +40,8 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Name</th>
+                    <th>Product ID</th>
+                    <th>Name Product</th>
                     <th>Images</th>
                     <th>Action</th>
                 </tr>
@@ -49,8 +50,9 @@
                 @foreach($image as $value)
 					<tr>
 						<td width="10%">{{$value->id}}</td>
+						<td width="15%">{{$value->product_id}}</td>
 						<td width="20%">{{$value->name}}</td>
-						<td width="40%"><img src='{{asset("/upImage/$value->path")}}' width="50px" height="50px" alt=""></td>
+						<td width="25%"><img src='{{asset("/upImage/$value->path")}}' width="50px" height="50px" alt=""></td>
 						<td width="30%">
 							<a class="btn btn-danger delete_Cate" data-id="{{$value->id}}">Delete</a>
 							 <a href=""  data-id="{{$value->id}}" data-target="#myModal2" data-toggle="modal" class="btn btn-info rounded-pill edit_Cate">Edit</a>

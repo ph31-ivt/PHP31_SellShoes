@@ -59,7 +59,6 @@
 
 		<div class="row">
         	<div class="col-12 d-flex justify-content-center" id="pageAdd">
-        		{{$order->links()}}
         	</div>
 		</div> <!-- phân trang -->
 

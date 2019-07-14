@@ -162,7 +162,7 @@
 					</fieldset>
 					<fieldset class="form-group">
 						<label for="formGroupExampleInput5">Size ID<small>*</small></label>
-						<select name="size_id" class="form-control"  id="formGroupExampleInput5">
+						<select name="size_id[]" class="form-control"  id="size" multiple>
 							@foreach($listSize as $value)
 								<option value="{{$value->id}}">{{$value->name}}</option>
 							@endforeach
@@ -240,7 +240,7 @@
 					</fieldset>
 					<fieldset class="form-group">
 						<label for="formGroupExampleInput5">Size ID<small>*</small></label>
-						<select name="size_id" class="form-control"  id="formGroupExampleInput5">
+						<select name="size_id[]" class="form-control"  id="formGroupExampleInput5" multiple>
 							@foreach($listSize as $value)
 								<option value="{{$value->id}}">{{$value->name}}</option>
 							@endforeach
@@ -274,7 +274,7 @@
 				
 			</div>
 			<div class="modal-body">
-				<form id="formUpdate">
+				<form id="formUpdateQuantity">
 					@csrf
 					<fieldset class="form-group">
 						<label for="formGroupExampleInput">Product Name<small>*</small></label>
@@ -283,14 +283,6 @@
 					<fieldset class="form-group">
 						<label for="formGroupExampleInput2">Quantity<small>*</small></label>
 						<input type="number" name="quantity" min="0" class="form-control" id="formGroupExampleInput2" placeholder="Quantity...">
-					</fieldset>
-					<fieldset class="form-group">
-						<label for="formGroupExampleInput5">Size ID<small>*</small></label>
-						<select name="size_id" class="form-control"  id="formGroupExampleInput5" disabled>
-							@foreach($listSize as $value)
-								<option value="{{$value->id}}">{{$value->name}}</option>
-							@endforeach
-						</select>
 					</fieldset>
 				</form>
 			</div>
