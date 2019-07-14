@@ -48,7 +48,7 @@
             <div class="mb-1 d-flex">
             	@foreach($product->sizes as $value)
               <label  class="d-flex mr-3 mb-3">
-                <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" name="size" value="{{$value->id}}"></span><span class="d-inline-block text-black size">{{$value->name}}</span>
+                <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" name="size" value="{{$value->id}}" data-name="{{$value->name}}"></span><span class="d-inline-block text-black">{{$value->name}}</span>
               </label>
              	@endforeach
             </div>

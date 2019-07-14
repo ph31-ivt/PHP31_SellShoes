@@ -37,6 +37,6 @@ class Product extends Model
     }
 
     public function orders(){
-        return $this->belongsToMany('App\Order','order__products','product_id','order_id')->withPivot('quantity','price')->withTimestamps();
+        return $this->belongsToMany('App\Order','order__products','product_id','order_id')->withPivot('quantity','price','size')->withTimestamps();
     }
 }

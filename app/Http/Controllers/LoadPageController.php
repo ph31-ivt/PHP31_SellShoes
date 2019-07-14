@@ -6,10 +6,61 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\Size;
 use App\Product;
+use App\Order;
+use Validator;
 class LoadPageController extends Controller
 {
-    public function checkout(){
-        return view('user.checkout');
+
+    public function order(Request $request){
+        $validator = Validator::make($request->all(),[
+            'name'=>'required',
+            'tel'=>'numeric|required',
+            'email'=>'email|required',
+            'address'=>'required'
+        ],[
+            'name.required'=>'Name không được để trống',
+            'tel.required'=>'Tel không được để trống',
+            'email.required'=>'Email không được để trống',
+            'address.required'=>'Address không được để trống',
+        ]);
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()->all()]);
+        }else{
+            $data = $request->except('size','productID','quantity');
+            $data['status']=1;
+            $size = explode(';', $request->get('size'));
+            $quantity = explode(';', $request->get('quantity'));
+            $productID = explode(';', $request->get('productID'));
+            $user= \Auth::user();
+            $userID = $user->id;
+            $data['user_id']=$userID;
+            for ($i=0; $i <count($size)-1 ; $i++) { 
+                // $sizeID[$i]=;
+                $sizeID[$i]= Size::select('id')->where('name','=',str_replace(array('{','}'), array('',''), $size[$i]))->get();
+                $sl[$i]=str_replace(array('{','}'), array('',''),$quantity[$i]);
+            }
+
+            Order::create($data)->products()->sync([1=>['quantity'=>2000,'price'=>100,'size'=>1]]);
+
+
+
+            
+            // $t = Size::where('name','=',$size)->get('id');
+            return response()->json($sl);
+        }
+
+        
+    }
+
+    //view checkout
+    public function checkout(Request $request){
+        $quantity = explode(';',$request->get('quantity'));
+        $price = explode(';',trim($request->get('size')));
+        $nameProduct = explode(';',trim($request->get('nameProduct')));
+        $total =$request->get('total');
+        $size = explode(';', $request->get('sizeAll'));
+        $productID = explode(';', $request->get('productID'));
+        return view('user.checkout',compact('quantity','price','nameProduct','total','productID','size'));
     }
     // delete product khỏi giỏ hàng
     public function deleteCart(Request $request){
@@ -33,21 +84,26 @@ class LoadPageController extends Controller
     public function cartDetail(){
         $user = \Auth::user();
         $id = $user->id;
+
         $product = Session()->get('user');
+
         foreach ($product as $key => $value) {
             if($key == $id){
                 $productID = $value;
             }
         }
-        foreach ($productID['cart'] as $key => $value) {
-           $allPro[]= Product::findOrFail($key);
+        if(!empty($productID)){
+            foreach ($productID['cart'] as $key => $value) {
+               $allPro[]= Product::findOrFail($key);
+            }
+            if(empty($allPro)){
+                return view('user.cart');
+            }else{
+                $sizeAll=Size::all();
+                return view('user.cart',compact('allPro','sizeAll'));
+            }
         }
-        if(empty($allPro)){
-            return view('user.cart');
-        }else{
-            $sizeAll=Size::all();
-            return view('user.cart',compact('allPro','sizeAll'));
-        }
+        
         
     }
 

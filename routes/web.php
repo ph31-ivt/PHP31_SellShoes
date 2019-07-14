@@ -83,5 +83,6 @@ Route::group(['prefix'=>'user','middleware'=>['checkLogin','web']],function(){
 	Route::post('cartShopping','LoadPageController@cartShopping')->name('shopDetail');
 	Route::get('cartDetail','LoadPageController@cartDetail')->name('cartDetail');
 	Route::post('cartDetail','LoadPageController@deleteCart')->name('deleteCart');
-	Route::get('checkout','LoadPageController@checkout')->name('checkout');
+	Route::post('checkout','LoadPageController@checkout')->name('checkout');
+	Route::post('order','LoadPageController@order');
 });

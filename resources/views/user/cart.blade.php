@@ -10,9 +10,9 @@
 
 @section('content')
 <?php 
-echo "<pre>";
-print_r (Session::all());
-echo "</pre>";
+// echo "<pre>";
+// print_r (Session::all());
+// echo "</pre>";
   $size = Session::get('user');
   $email = $size['email'][0];
   foreach ($size as $key => $value) {
@@ -49,6 +49,13 @@ echo "</pre>";
                 <tbody >
           				@if(!empty($allPro))
           				@foreach($allPro as $key => $value)
+                   <?php 
+                           $sizeCheck= $size[$email]['cart'][$value->id]['size'][0];
+                            foreach ($sizeAll as $key => $vl) {
+                               if($sizeCheck==$vl->id)
+                                 $nameSize= $vl->name;
+                            }
+                          ?>
           					<tr>
 	                    <td class="product-thumbnail">
 	                    	@foreach($value->images as $vl)
@@ -57,20 +64,12 @@ echo "</pre>";
 							          @endforeach
 	                    </td>
 	                    <td class="product-name">
-	                      <h2 class="h5 text-black">{{$value->name}}</h2>
+	                      <h2 class="h5 text-black nameProduct" data-id="{{$value->id}}">{{$value->name}}</h2>
 	                    </td>
                       <td class="product-name">
-                        <p>
-                          <?php 
-                           $sizeCheck= $size[$email]['cart'][$value->id]['size'][0];
-                            foreach ($sizeAll as $key => $vl) {
-                               if($sizeCheck==$vl->id)
-                                 echo $vl->name;
-                            }
-                          ?>
-                        </p>
+                        <p class="size" data-name={{$nameSize}}>{{$nameSize}}</p>
                       </td>
-	                    <td  class="{{$value->id}}price">{{number_format($value->price)}}</td>
+	                    <td  class="{{$value->id}}price price">{{$value->price}}</td>
 	                    <td>
 	                      <div class="input-group mb-3" style="max-width: 120px;">
 	                        <div class="input-group-prepend">
@@ -144,7 +143,18 @@ echo "</pre>";
 
                 <div class="row">
                   <div class="col-md-12">
-                    <a href="{{route('checkout')}}" class="btn btn-primary">Proceed To Checkout</a>
+                    <form action="{{route('checkout')}}" method="post">
+                      @csrf
+                      <input type="hidden" value="" name="size">
+                      <input type="hidden" value="" name="nameProduct">
+                      <input type="hidden" value="" name="quantity">
+                      <input type="hidden" value="" name="total">
+                      <input type="hidden" value="" name="productID">
+                      <input type="hidden" value="" name="sizeAll">
+                      <input type="submit"  class="btn btn-primary" value=" To Checkout ">
+                    </form>
+                    <!-- <button class="btn btn-primary" id="checkout"> To Checkout</button> -->
+                    
                   </div>
                 </div>
               </div>
