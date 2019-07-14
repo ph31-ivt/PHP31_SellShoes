@@ -47,8 +47,8 @@
             <p><strong class="text-primary h4" id="price">{{$product->price}}</strong> VNĐ</p>
             <div class="mb-1 d-flex">
             	@foreach($product->sizes as $value)
-              <label for="option-sm" class="d-flex mr-3 mb-3">
-                <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-sm" name="size"></span><span class="d-inline-block text-black size">{{$value->name}}</span>
+              <label  class="d-flex mr-3 mb-3">
+                <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" name="size" value="{{$value->id}}" data-name="{{$value->name}}"></span><span class="d-inline-block text-black">{{$value->name}}</span>
               </label>
              	@endforeach
             </div>

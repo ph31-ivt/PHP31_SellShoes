@@ -17,7 +17,6 @@ class CreateOrderProductsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('quantity');
             $table->double('price');
-            $table->integer('status');
             $table->bigInteger('order_id')->unsigned()->index();
             $table->bigInteger('product_id')->unsigned()->index();
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');

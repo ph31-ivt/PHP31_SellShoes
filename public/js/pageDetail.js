@@ -32,11 +32,7 @@ $(document).ready(function(){
 			var quantity = $('input[type="text"]').val();
 			var nameProduct = $('.nameProduct').text();
 			var price = $('#price').text();
-			var size = $('.size').text();
-			// console.log(nameProduct);
-			// console.log(quantity);
-			// console.log(price);
-			// console.log(size);
+			var size = $('input[name="size"]:checked').val();
 		$.ajax({
 			url:'/user/cartShopping',
 			type:'POST',
@@ -45,11 +41,11 @@ $(document).ready(function(){
 				'id':id,
 				'quantity':quantity,
 				'product':nameProduct,
-				'price':price,
 				'size':size
 			},
 			success:function(data){
 					$('.count').html(data);
+					alert('Đã thêm vào giỏ hàng');
 			}
 		});
 	});

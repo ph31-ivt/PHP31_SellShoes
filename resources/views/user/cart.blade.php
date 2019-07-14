@@ -9,7 +9,18 @@
 @endsection
 
 @section('content')
-
+<?php 
+// echo "<pre>";
+// print_r (Session::all());
+// echo "</pre>";
+  $size = Session::get('user');
+  $email = $size['email'][0];
+  foreach ($size as $key => $value) {
+      if($key == $email){
+        $sizeProduct = $value;
+      }
+  }
+?>
 <div class="bg-light py-3">
       <div class="container">
         <div class="row">
@@ -28,6 +39,7 @@
                   <tr>
                     <th class="product-thumbnail">Image</th>
                     <th class="product-name">Product</th>
+                    <th class="product-name">Size</th>
                     <th class="product-price">Price</th>
                     <th class="product-quantity">Quantity</th>
                     <th class="product-total">Total</th>
@@ -35,38 +47,46 @@
                   </tr>
                 </thead>
                 <tbody >
-				@if(!empty($allPro))
-				@foreach($allPro as $key => $value)
-
-					<tr>
-						
+          				@if(!empty($allPro))
+          				@foreach($allPro as $key => $value)
+                   <?php 
+                           $sizeCheck= $size[$email]['cart'][$value->id]['size'][0];
+                            foreach ($sizeAll as $key => $vl) {
+                               if($sizeCheck==$vl->id)
+                                 $nameSize= $vl->name;
+                            }
+                          ?>
+          					<tr>
 	                    <td class="product-thumbnail">
 	                    	@foreach($value->images as $vl)
 	                    	 	<img src='{{asset("upImage/$vl->path")}}' alt="Image" class="img-fluid">
 	                    	 	@break
-							@endforeach
+							          @endforeach
 	                    </td>
 	                    <td class="product-name">
-	                      <h2 class="h5 text-black">{{$value->name}}</h2>
+	                      <h2 class="h5 text-black nameProduct" data-id="{{$value->id}}">{{$value->name}}</h2>
 	                    </td>
-	                    <td  class="{{$value->id}}price">{{$value->price}}</td>
+                      <td class="product-name">
+                        <p class="size" data-name={{$nameSize}}>{{$nameSize}}</p>
+                      </td>
+	                    <td  class="{{$value->id}}price price">{{$value->price}}</td>
 	                    <td>
 	                      <div class="input-group mb-3" style="max-width: 120px;">
 	                        <div class="input-group-prepend">
 	                          <button class="btn btn-outline-primary js-btn-minus " data-click="{{$value->id}}" type="button">&minus;</button>
 	                        </div>
-	                        <input type="text" class="form-control text-center {{$value->id}}" data-id="{{$value->id}}" disabled value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+	                        <input type="text" class="form-control text-center quantity {{$value->id}}" data-id="{{$value->id}}" disabled value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
 	                        <div class="input-group-append">
 	                          <button class="btn btn-outline-primary js-btn-plus" data-click="{{$value->id}}" type="button">&plus;</button>
 	                        </div>
 	                      </div>
 
 	                    </td>
-	                    <td class="{{$value->id}}money">{{$value->price}}</td>
+	                    <td class="{{$value->id}}money total">{{$value->price}}</td>
 	                    <td><a href="#" class="btn btn-primary btn-sm delete"data-id="{{$value->id}}">X</a></td>
 	                  </tr>
-				@endforeach
-				@endif
+          				@endforeach
+          				@endif
                 </tbody>
               </table>
             </div>
@@ -109,7 +129,7 @@
                     <span class="text-black">Subtotal</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">$230.00</strong>
+                    <strong class="text-black" id="total"></strong>
                   </div>
                 </div>
                 <div class="row mb-5">
@@ -117,13 +137,24 @@
                     <span class="text-black">Total</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">$230.00</strong>
+                    <strong class="text-black" ></strong>
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-md-12">
-                    <button class="btn btn-primary btn-lg py-3 btn-block" onclick="window.location='checkout.html'">Proceed To Checkout</button>
+                    <form action="{{route('checkout')}}" method="post">
+                      @csrf
+                      <input type="hidden" value="" name="size">
+                      <input type="hidden" value="" name="nameProduct">
+                      <input type="hidden" value="" name="quantity">
+                      <input type="hidden" value="" name="total">
+                      <input type="hidden" value="" name="productID">
+                      <input type="hidden" value="" name="sizeAll">
+                      <input type="submit"  class="btn btn-primary" value=" To Checkout ">
+                    </form>
+                    <!-- <button class="btn btn-primary" id="checkout"> To Checkout</button> -->
+                    
                   </div>
                 </div>
               </div>

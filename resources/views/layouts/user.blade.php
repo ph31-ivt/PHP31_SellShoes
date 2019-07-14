@@ -55,16 +55,19 @@
                         <?php 
                          $id = Session()->get('user.email.0');
                          $session = Session()->get('user');
-                         foreach ($session as $key => $value) {
-                            if($key==$id){
-                              $cart = $value;
-                            }
+                         if($session){
+                            foreach ($session as $key => $value) {
+                              if($key==$id){
+                                $cart = $value;
+                              }
+                           }
+                           if(!empty($cart)){
+                             echo  $cartNumber = count($cart['cart']);
+                           }else{
+                            echo '0';
+                           }
                          }
-                         if(!empty($cart)){
-                           echo  $cartNumber = count($cart['cart']);
-                         }else{
-                          echo '0';
-                         }
+                         
                              
                         ?>
                       </span>

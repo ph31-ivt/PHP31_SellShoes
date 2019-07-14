@@ -50,17 +50,17 @@
                     </li>
 
                     <h3 class="menu-title">SEARCH</h3><!-- /.menu-title -->
-                    
+                   <!--  
                     <li>
                         <form class="form-inline mt-3 navbar-form pull-right">
                             <div class="row">
                                 <input class="form-control mr-1" type="text" placeholder="Search">
                                 <a href="" class="btn btn-secondary rounded-pill"><i class="fas fa-search"></i></a>
                             </div>
-                            
-                            <!-- <button class="btn btn-success-outline" type="submit">Search</button> -->
+                             -->
+                            <!-- <button class="btn btn-success-outline" type="submit">Search</button>
                         </form>
-                    </li>
+                    </li> -->
 
 
 
