@@ -11,7 +11,7 @@ use Validator;
 
 class ProductController extends Controller
 {
-
+    // search product with direction
     public function SearchProductQuickly(Request $request){
         $value = $request->get('value');
         $out="";
@@ -29,6 +29,7 @@ class ProductController extends Controller
         return response()->json($out);
     }
 
+    // search product with name product or status or price(admin)
     public function SearchProduct(Request $request){
         $value = $request->get('value');
         if(!empty($value)){
@@ -73,11 +74,14 @@ class ProductController extends Controller
         return response()->json($outTable);
     }
 
+    // search name product in admin
     public function Search(Request $request){
         $product = Product::where('name','LIKE','%'.$request->name.'%')->get();
         return response()->json($product);
     }
 
+
+    // show popover
     public function ShowPopover($id){
         $info = Product::find($id);
         foreach ($info->sizes as $value) {
@@ -92,7 +96,6 @@ class ProductController extends Controller
                 <p><lable>Brand: '.$info->brand->name.'</label></p>
                 <p><lable>Quantity: '.$quantity.'</label></p>
                 <p><lable>Description: '.$info->description.'</label></p>';
-           
         }
         if(empty($infoImg)){
             $out='<p><lable>Category: '.$info->category->name.'</label></p>
@@ -104,6 +107,7 @@ class ProductController extends Controller
         
     }
 
+    // update quantity with size and id product
     public function UpdateQuantity(Request $request){
         $id = $request->get('id');
         $size_id = $request->get('size_id');
@@ -137,12 +141,12 @@ class ProductController extends Controller
         }
     }
 
+
     public function ShowInfo($id){
         $info = Product::find($id);
        foreach ($info->sizes as $value) {
           $quantity = $value->pivot->quantity;
             $size[] = $value->id;
-
        }
         return response()->json(['data'=>$info,'quantity'=>$quantity,'size'=>$size]);
     }
@@ -203,7 +207,7 @@ class ProductController extends Controller
                 foreach ($size_id as $key => $value) {
                     $size[$value]= ['quantity'=>$quantity];
                 }
-                Product::create($data)->sizes()->sync($data); 
+                Product::create($data)->sizes()->sync($size); 
                 $result = ['dataSuccess'=>'Create Product Success!!!'];
             }else{
                 $result = ['dataSuccess'=>'Product Already Exists!!!'];
@@ -249,7 +253,6 @@ class ProductController extends Controller
             'price'=>'required|numeric',
             'description'=>'required',
             'quantity'=>'required|numeric'
-
         ],
         [
             'name.required'=>'Tên sản phẩm không được để trống!',
@@ -299,41 +302,5 @@ class ProductController extends Controller
         }
         return Response()->json($result);
     }
-
-    // public function capnhat(Request $request){
-    //     $id = $request->get('id');
-    //     $validator = Validator::make($request->all(),[
-    //         'name'=>'required',
-    //         'price'=>'required|numeric',
-    //         'description'=>'required',
-    //         'quantity'=>'required|numeric'
-
-    //     ],
-    //     [
-    //         'name.required'=>'Tên sản phẩm không được để trống!',
-    //         'price.required'=>'Giá sản phẩm không được để trống!',
-    //         'description.required'=>"Mô tả sản phẩm không được để trống!",
-    //         'quantity.required'=>'Giá sản phẩm không được để trống!'
-    //     ]);
-
-    //     if($validator->fails()){
-    //         return response()->json(['errors'=>$validator->errors()->all()]);
-    //     }else{
-    //         $data = $request->except('quantity');
-    //         $product = Product::findOrFail($id);
-    //         $size_id = $request->get('size_id');
-    //         $quantity = $request->get('quantity');
-    //           foreach ($size_id as $key => $value) {
-    //             $size[$value]=['quantity'=>$quantity];
-    //         }
-    //         if($product->update($data)){
-    //            $product->sizes()->sync($size);
-    //             $result=["message"=>'Update Success!!!'];
-    //         }else{
-    //             $result=["message"=>'Update False!!!'];
-    //         }
-    //         return Response()->json($size);
-    //     }
-    // }
 
 }

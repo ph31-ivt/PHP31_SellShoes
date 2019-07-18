@@ -9,15 +9,13 @@ use Validator;
 class PromotionController extends Controller
 {
 
+    // show infomation promotion
     public function ShowInfoAll($id){
         $promotion=Promotion::find($id);
-        // foreach ($promotion->product as $value) {
-        //    $nameProduct = $value->name;
-        // }
-        // ['data'=>$promotion,'nameProduct'=>$nameProduct]
         return response()->json($promotion);
     }
 
+    // show infomation promotion
     public function ShowInfo($id){
         $promotion =Promotion::findOrFail($id);
         return response()->json($promotion);
@@ -78,7 +76,6 @@ class PromotionController extends Controller
                 $promotion = Promotion::create($data);
                 $result = ['dataSuccess'=>'Promotion Create Success!'];
             }
-           
             return response()->json($result);
         }
         
@@ -146,8 +143,6 @@ class PromotionController extends Controller
             }else{
                  $result = ['message'=>"Promotion Already Exists!"];
             }
-            
-
             return response()->json($result);
         }
         
@@ -167,9 +162,6 @@ class PromotionController extends Controller
         }else{
              $result = ['message'=>"Delete Promotion False!!!"];
         }
-       
-        
-        
         return response()->json($result);
     }
 }

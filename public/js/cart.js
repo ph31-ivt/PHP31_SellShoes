@@ -1,7 +1,4 @@
 $(document).ready(function(){
-
-	
-	
 	$.ajaxSetup({
 		headers:{
 			'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
@@ -41,7 +38,6 @@ $(document).ready(function(){
 					$(this).find('.total').each(function(){
 						price +=$(this).text()+";";
 					});
-					
 				});
 				var total = $('#total').text();
 				$('form input[name="quantity"]').val(quantity);
@@ -52,8 +48,6 @@ $(document).ready(function(){
 		var price = $('.'+value+'price').text();
 		var money= $('.'+value+'money').text();
 		var total = price*value2;
-		
-
 	});
 
 	//xóa sản phẩm khỏi giỏ hàng
@@ -79,8 +73,7 @@ $(document).ready(function(){
 							}
 						});
 					});
-					 $('#total').html(total+',000 VNĐ');
-
+					 $('#total').html(total+' VNĐ');
 				}
 			});
 		}
@@ -101,9 +94,7 @@ $(document).ready(function(){
 				}
 			});
 		});
-		 $('#total').html(total+',000 VNĐ');
-
-
+		 $('#total').html(total+' VNĐ');
 
 	//checkout
 	$('#checkout').on('click',function(){
@@ -149,7 +140,6 @@ $(document).ready(function(){
 			
 		});
 		var total = $('#total').text();
-
 		$('form input[name="size"]').val(price);
 		$('form input[name="nameProduct"]').val(nameProduct);
 		$('form input[name="quantity"]').val(quantity);
@@ -177,7 +167,6 @@ $(document).ready(function(){
 			$(this).find('.name').each(function(){
 				quantity+=$(this).attr('data-number')+';';
 			});
-
 		});
 		$.ajax({
 			url:'/user/order',
@@ -198,6 +187,10 @@ $(document).ready(function(){
 						$('.err').show();
 						$('.err').append(value+'<br>');
 					});
+				}
+				if(data != undefined){
+					$('.count').html('0');
+					alert(data);
 				}
 			}
 		});

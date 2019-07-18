@@ -38,7 +38,6 @@ $(document).ready(function(){
 
 
 	var out ="";
-
 	$('#add').click(function(){
 		$.ajax({
 			url:'/admin/comments/approve',
@@ -61,11 +60,9 @@ $(document).ready(function(){
 			}
 
 		});
-
-
 	});
 
-	// start approve
+	// start approve comments
 	$(document).on('click','.agree',function(){
 		var id = $(this).attr("data-id");
 		$.ajax({
@@ -78,9 +75,7 @@ $(document).ready(function(){
 				$("#table_Cate").load(" #table_Cate");
 				$("#pageAdd").load(" #pageAdd");
 			}
-
 		});
-
 	});
 
 
@@ -99,71 +94,6 @@ $(document).ready(function(){
 				}
 			});
 	});
-
-
-	// start popover
-	// $('.hover').popover({
-	// 	content:fetchData,
-	// 	html:true,
-	// 	trigger:'hover',
-	// 	placement:'right'
-	// });
-
-	// function fetchData(){
-	// 	var dataShow = "";
-	// 	var id = $(this).attr('productID');
-	// 	console.log(id);
-	// 	$.ajax({
-	// 		url:'/admin/product/popover/'+id,
-	// 		dataType:'json',
-	// 		async:false,
-	// 		type:'GET',
-	// 		data:{},
-	// 		success:function(data){
-	// 			dataShow=data;
-	// 		}
-	// 	});
-	// 	return dataShow;
-	// }s
-
-	
-
-	// start search
-	// fetchDataSearch();
-	// function fetchDataSearch(value=''){
-	// 	$.ajax({
-	// 		url:'/admin/product/searchPoduct',
-	// 		type:'post',
-	// 		dataType:'json',
-	// 		data:{
-	// 			'value':value
-	// 		},
-	// 		success:function(data){
-	// 			console.log(data);
-	// 		}
-	// 	});
-
-	// }
-
-	// $(document).on('keyup','#search',function(){
-	// 	var value = $(this).val();
-	// 	console.log(value);
-	// 	// fetchDataSearch(value);
-	// 	$.ajax({
-	// 		url:'/admin/product/searchPoduct',
-	// 		type:'post',
-	// 		dataType:'json',
-	// 		data:{
-	// 			'value':value
-	// 		},
-	// 		success:function(data){
-	// 			console.log(data);
-	// 			$('#searchProduct').fadeIn();
-	// 			$('#searchProduct').html(data);
-	// 		}
-	// 	});
-	// });
-
 
 });
 

@@ -24,7 +24,7 @@
 <div class="bg-light py-3">
       <div class="container">
         <div class="row">
-          <div class="col-md-12 mb-0"><a href="index.html">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Cart</strong></div>
+          <div class="col-md-12 mb-0"><a href="{{route('page.index')}}">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Cart</strong></div>
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@
                         <p class="size" data-name={{$nameSize}}>{{$nameSize}}</p>
                       </td>
 	                    <td  class="{{$value->id}}price price">{{$value->price}}</td>
-	                    <td>
+	                    <td width="13%">
 	                      <div class="input-group mb-3" style="max-width: 120px;">
 	                        <div class="input-group-prepend">
 	                          <button class="btn btn-outline-primary js-btn-minus " data-click="{{$value->id}}" type="button">&minus;</button>
@@ -95,14 +95,7 @@
 
         <div class="row">
           <div class="col-md-6">
-            <div class="row mb-5">
-              <div class="col-md-6 mb-3 mb-md-0">
-                <button class="btn btn-primary btn-sm btn-block">Update Cart</button>
-              </div>
-              <div class="col-md-6">
-                <button class="btn btn-outline-primary btn-sm btn-block">Continue Shopping</button>
-              </div>
-            </div>
+            
             <div class="row">
               <div class="col-md-12">
                 <label class="text-black h4" for="coupon">Coupon</label>

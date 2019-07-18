@@ -6,6 +6,12 @@
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
 
 <script src="/js/pageLoad.js"></script>
+<style>
+  #showProduct img{
+    width: 160px;
+    height: 160px;
+  }
+</style>
 @endsection
 
 @section('content')
@@ -41,7 +47,8 @@
                     </figure>
                     <div class="block-4-text p-4">
                       <h3><a href='{{route("showDetail",$value->id)}}'>{{$value->name}}</a></h3>
-                      <p class="text-primary font-weight-bold">{{$value->price}} vnđ</p>
+                      <p class="text-primary font-weight-bold mt-2">{{$value->price}} vnđ</p>
+                      <a href="{{route('view',$value->id)}}" class="btn btn-info">View</a>
                     </div>
                   </div>
                 </div>
@@ -60,7 +67,7 @@
               <h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
               <ul class="list-unstyled mb-0">
                 @foreach($category as $value)
-                  <li class="mb-1"><a href="#" class="d-flex"><span>{{$value->name}}</span> <span class="text-black ml-auto">(2,220)</span></a></li>
+                  <li class="mb-1"><a href="#" data-id="{{$value->id}}" class="d-flex category"><span>{{$value->name}}</span></a></li>
                 @endforeach
               </ul>
             </div>
@@ -74,11 +81,14 @@
 
               <div class="mb-4">
                 <h3 class="mb-3 h6 text-uppercase text-black d-block">Size</h3>
-                  @foreach($size as $value)
+                <form action="">
+                  @csrf
+                   @foreach($size as $value)
                     <label  class="d-flex">
-                      <input type="checkbox" id="s_sm" class="mr-2 mt-1"> <span class="text-black">{{$value->name}} (2,319)</span>
-                    </label>
-                 @endforeach
+                        <input type="radio" id="s_sm" name="checkSize" data-id="{{$value->id}}" class="mr-2 mt-1 size"><span class="text-black">{{$value->name}}</span>
+                      </label>
+                   @endforeach
+                </form>
               </div>
             </div>
           </div>

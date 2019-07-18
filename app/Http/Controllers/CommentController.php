@@ -11,12 +11,10 @@ class CommentController extends Controller
     public function read(){
         $comment =Comment::where('status','=',2)->get();
         $users;
-        
         foreach ($comment as $key=> $value){
              $users[$key]=$value->user->name;
         }
         return response()->json(['data'=>$comment,'user'=>$users]);
-        // return response()->json($users);
     }
     /**
      * Display a listing of the resource.
@@ -26,7 +24,6 @@ class CommentController extends Controller
     public function index()
     {
         $comment =Comment::where('status','=',1)->paginate(7);
-        
         return view('admin.listComent',compact('comment'));
 
     }

@@ -9,6 +9,7 @@ use Validator;
 
 class ImageController extends Controller
 {   
+    // start upload image
     public function UpLoadImage(Request $request,$id){
            $validator = Validator::make($request->all(),[
             'name'=>'required',
@@ -83,7 +84,6 @@ class ImageController extends Controller
             'image.mimes'=>'Đuôi ảnh không đúng định dạng!'
            
         ]);
-
         if($validator->fails()){
             return Response()->json(['errors'=>$validator->errors()->all()]);
         }else{
