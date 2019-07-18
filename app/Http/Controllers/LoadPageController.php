@@ -11,6 +11,7 @@ use Validator;
 class LoadPageController extends Controller
 {
 
+    // order product
     public function order(Request $request){
         $validator = Validator::make($request->all(),[
             'name'=>'required',
@@ -30,27 +31,32 @@ class LoadPageController extends Controller
             $data['status']=1;
             $size = explode(';', $request->get('size'));
             $quantity = explode(';', $request->get('quantity'));
-            $productID = explode(';', $request->get('productID'));
+            $product= explode(';', $request->get('productID'));
             $user= \Auth::user();
             $userID = $user->id;
             $data['user_id']=$userID;
             for ($i=0; $i <count($size)-1 ; $i++) { 
-                // $sizeID[$i]=;
                 $sizeID[$i]= Size::select('id')->where('name','=',str_replace(array('{','}'), array('',''), $size[$i]))->get();
                 $sl[$i]=str_replace(array('{','}'), array('',''),$quantity[$i]);
+                $priceID[$i]=Product::select('price')->where('id','=',str_replace(array('{','}'), array('',''),$product[$i]))->get();
+                $productID[$i]=str_replace(array('{','}'), array('',''),$product[$i]);
+            }
+            foreach ($productID as $key => $value) {
+                $order[$value]=['quantity'=>$sl[$key],'price'=>$priceID[$key][0]['price'],'size'=>$sizeID[$key][0]['id']];
             }
 
-            Order::create($data)->products()->sync([1=>['quantity'=>2000,'price'=>100,'size'=>1]]);
-
-
-
-            
-            // $t = Size::where('name','=',$size)->get('id');
-            return response()->json($sl);
+            $sessionUser = Session()->get('user');
+            $email = $sessionUser['email'][0];
+            if(Order::create($data)->products()->sync($order)){
+                $result="Bạn đã đặt hàng thành công!";
+                Session()->forget('user.'.$email);
+            }
+            return response()->json($result);
         }
 
         
     }
+
 
     //view checkout
     public function checkout(Request $request){
@@ -62,6 +68,8 @@ class LoadPageController extends Controller
         $productID = explode(';', $request->get('productID'));
         return view('user.checkout',compact('quantity','price','nameProduct','total','productID','size'));
     }
+
+
     // delete product khỏi giỏ hàng
     public function deleteCart(Request $request){
         $productID = $request->get('id');
@@ -102,6 +110,8 @@ class LoadPageController extends Controller
                 $sizeAll=Size::all();
                 return view('user.cart',compact('allPro','sizeAll'));
             }
+        }else{
+            return view('user.cart');
         }
         
         
@@ -113,10 +123,8 @@ class LoadPageController extends Controller
         $user = \Auth::user();
         $id = $user->id;
         $idProduct = $request->get('id');
-        // $request->session()->push('user.'.$id.'.cart.'.$idProduct.'.nameProduct',$request->get('product'));
         $request->session()->push('user.'.$id.'.cart.'.$idProduct.'.size',$request->get('size'));
         $cart =$request->session()->get('user');
-         
         foreach ($cart as $key => $value) {
             if($key == $id){
                 $result = $value;
@@ -128,24 +136,19 @@ class LoadPageController extends Controller
     }
 
 
-
-    // Giá tiền khi thay đổi số lượng
+    // change price when change quantity at view order product
     public function showPrice(Request $request){
         $data = $request->get('quantity');
         $id = $request->get('id');
         $quantity = Product::findOrFail($id)->price;
-        // if($data>1){
-            $out = $quantity*$data;
-        // }else{
-            // $out = $quantity;
-        // }
+        $out = $quantity*$data;
         return response()->json($out);
     }
 
 
 
 
-    // tìm kiếm sản phẩm
+    // search all product with name product and prices
     public function search(Request $request){
         $data = $request->get('value');
         if(!empty($data)){
@@ -169,7 +172,7 @@ class LoadPageController extends Controller
                             <a href="http://phpshoes.com/user/showDetail/'.$value->id.'"><img src="http://phpshoes.com/upImage/'.$img.'" alt="Image placeholder" class="img-fluid"></a>
                         </figure>
                         <div class="block-4-text p-4">
-                          <h3><a href="shop-single.html" data-id="'.$value->id.'">'.$value->name.'</a></h3>
+                          <h3><a href="http://phpshoes.com/user/showDetail/'.$value->id.'" data-id="'.$value->id.'">'.$value->name.'</a></h3>
                           <p class="text-primary font-weight-bold" data-id="'.$value->id.'">'.$value->price.' vnđ</p>
                         </div>
                       </div>
@@ -183,10 +186,91 @@ class LoadPageController extends Controller
         return response()->json($out);
     }
 
+
+    // search category
+    public function searchCategory($id){
+        $products = Product::where('category_id','=',$id)->get();
+        $count = count($products);
+        $out="";
+        if($count>=1){
+            foreach ($products as $key => $value) {
+                foreach ($value->images as $key => $val) {
+                   $img = $val->path;
+                   break;
+                }
+               $out.='
+                        <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
+                        <div class="block-4 text-center border">
+                        <figure class="block-4-image" data-id="'.$value->id.'">
+                            <a href="http://phpshoes.com/user/showDetail/'.$value->id.'"><img src="http://phpshoes.com/upImage/'.$img.'" alt="Image placeholder" class="img-fluid"></a>
+                        </figure>
+                        <div class="block-4-text p-4">
+                          <h3><a href="http://phpshoes.com/user/showDetail/'.$value->id.'" data-id="'.$value->id.'">'.$value->name.'</a></h3>
+                          <p class="text-primary font-weight-bold" data-id="'.$value->id.'">'.$value->price.' vnđ</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    ';
+            }
+        }else{
+            $out.='<p>Sản phẩm này không được tìm thấy!</p>';
+        }
+        return response()->json($out);
+    }
+
+
+    // start seach with size
+    public function searchSize($id){
+        $size=Size::findOrFail($id);
+        foreach ($size->products as $key => $value) {
+            $productID[]=$value->pivot->product_id;
+        }
+        $out='';
+        if(count($productID)>=1){
+            foreach ($productID as $key => $value) {
+                $product = Product::findOrFail($value);
+                 foreach ($product->images as $key => $vl) {
+                     $img = $vl->path;
+                     break;
+                 }
+                $out.='
+                        <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
+                        <div class="block-4 text-center border">
+                        <figure class="block-4-image" data-id="'.$product->id.'">
+                            <a href="http://phpshoes.com/user/showDetail/'.$product->id.'"><img src="http://phpshoes.com/upImage/'.$img.'" alt="Image placeholder" class="img-fluid"></a>
+                        </figure>
+                        <div class="block-4-text p-4">
+                          <h3><a href="shop-single.html" data-id="'.$product->id.'">'.$product->name.'</a></h3>
+                          <p class="text-primary font-weight-bold" data-id="'.$product->id.'">'.$product->price.' vnđ</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    ';
+            }
+        }else{
+             $out.='<p>Sản phẩm này không được tìm thấy!</p>';
+        }
+        return response()->json($out);
+    }
+
+
+    // start click button view product
+    public function view($id){
+        $product=Product::find($id);
+        $category=$product->category_id;
+        $categoryAll = Product::where('category_id','like',$category)->get();
+        return view('user.view',compact('product','categoryAll'));
+    }
+
+
     // start show detail product
     public function showDetail($id){
         $product=Product::find($id);
-        return view('user.detailProduct',compact('product'));
+        $category=$product->category_id;
+        $categoryAll = Product::where('category_id','like',$category)->get();
+        return view('user.detailProduct',compact('product','categoryAll'));
     }
     /**
      * Display a listing of the resource.

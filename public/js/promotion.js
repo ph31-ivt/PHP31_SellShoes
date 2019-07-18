@@ -44,7 +44,6 @@ $(document).ready(function(){
 				$('.mess').html("ERROR!!!");
 			}
 		});
-
 	});  
 	// end add
 
@@ -69,7 +68,6 @@ $(document).ready(function(){
 					$("#pageAdd").load(" #pageAdd");
 				},
 				error:function(error){
-					// $('.mess').html(error);
 					alert("ERROR!!!");
 				}
 			});
@@ -78,9 +76,6 @@ $(document).ready(function(){
 			id=null;
 			console.log("id"+id);
 		};
-
-
-
 	});
 
 		// start update promotion
@@ -134,9 +129,7 @@ $(document).ready(function(){
 					}
 				}
 			});
-
 		});
-
 	});
 
 
@@ -146,7 +139,6 @@ $(document).ready(function(){
 		html:true,
 		trigger:'hover',
 		placement:'right'
-
 	});
 	function ShowInfo(){
 		var dataShow ="";
@@ -167,7 +159,4 @@ $(document).ready(function(){
 		});
 		return dataShow;
 	}
-
-	
-
 });

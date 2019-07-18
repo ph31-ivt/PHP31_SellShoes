@@ -10,6 +10,7 @@ $(document).ready(function(){
 
 	$('.notification').hide();
 
+	// start add brands
 	$('#save').click(function(e){
 		e.preventDefault();
 		console.log('alo');
@@ -38,7 +39,6 @@ $(document).ready(function(){
 			error:function(error){
 				$('.mess').html("ERROR!!!");
 			}
-
 
 		});
 
@@ -69,16 +69,11 @@ $(document).ready(function(){
 							alert(data['success']);
 						}
 						$("#brandCreate").load(' #brandCreate');
-						// location.reload()
 					}
 				});
-
 		});
 
 	});
-
-
-	
 
 });
 
@@ -98,6 +93,7 @@ $(document).ready(function(){
 
 	$('.notification').hide();
 
+	// start delete brands
 	$(document).on('click','.delete_Cate',function(e){
 		e.preventDefault();
 		console.log('alo');

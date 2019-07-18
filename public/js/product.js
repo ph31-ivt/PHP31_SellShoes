@@ -43,13 +43,10 @@ $(document).ready(function(){
 			error:function(error){
 				$('.mess').html("ERROR!!!");
 			}
-
-
 		}).done(function(){
 			$("#table_Cate").load(' #table_Cate');
 			$("#pageAdd").load(" #pageAdd");
 		});
-
 	});  
 	// end add
 
@@ -79,7 +76,6 @@ $(document).ready(function(){
 		}else{
 			return false;
 		}
-
 	});
 
 		// start edit
@@ -142,7 +138,6 @@ $(document).ready(function(){
 			id=null;
 		});
 
-
 	});
 
 	// start updateQuantity
@@ -156,7 +151,6 @@ $(document).ready(function(){
 			dataType:'json',
 			data:{},
 			success:function(data){
-				// console.log(data);
 				$('#formUpdateQuantity input[name="name"]').val(data.data['name']);
 				$('#formUpdateQuantity input[name="quantity"]').val(data['quantity']);
 				size_id = data['size'];
@@ -187,8 +181,6 @@ $(document).ready(function(){
 			});
 			}
 		});
-
-
 	});
 
 
@@ -199,7 +191,6 @@ $(document).ready(function(){
 		trigger:'hover',
 		placement:'right'
 	});
-
 	function fetchData(){
 		var dataShow = "";
 		var id = $(this).attr('productID');
@@ -216,25 +207,6 @@ $(document).ready(function(){
 		});
 		return dataShow;
 	}
-
-	
-
-	// start search
-	// fetchDataSearch();
-	// function fetchDataSearch(value=''){
-	// 	$.ajax({
-	// 		url:'/admin/product/searchPoduct',
-	// 		type:'post',
-	// 		dataType:'json',
-	// 		data:{
-	// 			'value':value
-	// 		},
-	// 		success:function(data){
-	// 			console.log(data);
-	// 		}
-	// 	});
-
-	// }
 
 	// load product search
 	$(document).on('keyup','#search',function(){
@@ -278,54 +250,6 @@ $(document).ready(function(){
 		$('#searchProduct').fadeOut();
 
 	});
-
-
-
-
-
-
-
-		// var blood =  new Bloodhound({
-		// 	remote:{
-		// 		url:'/admin/product/search?value=%QUERY%',
-		// 		wildcard: '%QUERY%'
-		// 	},
-		// 	dataTokenizer: Bloodhound.tokenizers.whitespace('value'),
-		// 	queryTokenizer: Bloodhound.tokenizers.whitespace
-		// });
-		// var bloodhound = new Bloodhound({
-  //               remote: {
-  //                   url: '/admin/product/search?value=%QUERY%',
-  //                   wildcard: '%QUERY%'
-  //               },
-  //               datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
-  //   			queryTokenizer: Bloodhound.tokenizers.whitespace
-  //           });
-
-		// $('#search').typeaheader({
-		// 	hint:true,
-		// 	highlight:true,
-		// 	minLenght:1
-		// },{
-
-		// 	source: bloodhound.ttAdapter(),
-		// 	name: 'product-search',
-		// 	display: function(data){
-		// 		return data.name;
-		// 	},
-  //               templates: {
-  //                   empty: [
-  //                       '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
-  //                   ],
-  //                   header: [
-  //                       '<div class="list-group search-results-dropdown">'
-  //                   ],
-  //                   suggestion: function(data) {
-  //                   return '<div style="font-weight:normal; margin-top:-10px ! important;" class="list-group-item">' + data.name + '</div></div>'
-  //                   }
-  //               }
-		// });
-
 });
 
 

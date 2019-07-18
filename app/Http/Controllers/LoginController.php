@@ -10,14 +10,15 @@ use Session;
 class LoginController extends Controller
 {
 
+    // logout auth
     public function logout(){
         \Auth::logout();
         Session()->forget('user.email');
-        // Session()->flush();
         return redirect()->route('formLogin');
     }
 
 
+    // login auth
     public function login(Request $request){
         $request->validate([
             'email'=>'required|email',
@@ -29,7 +30,6 @@ class LoginController extends Controller
             'password.min'=>"Password cần ít nhất 6 kí tự!",
             'password.max'=>"Password nhiều nhất 12 kí tự!"
         ]);
-     
         $data = $request->only('email','password');
         if(\Auth::attempt($data)){
             $user = \Auth::user();
@@ -45,26 +45,7 @@ class LoginController extends Controller
             return redirect()->route('login')->with('error','Sài tài khoản hoặc mật khẩu');
         }
     }
-    // public function loginUser(Request $request){
-    //     $request->validate([
-    //         'email'=>'required|email',
-    //         'password'=>'required|min:6|max:12'
-    //     ],[
-    //         'email.required'=>"Email không được để trống!",
-    //         'password.required'=>"Password không được để trống!",
-    //         'email.email'=>"Cần nhập vào là email!",
-    //         'password.min'=>"Password cần ít nhất 6 kí tự!",
-    //         'password.max'=>"Password nhiều nhất 12 kí tự!"
-    //     ]);
-     
-    //     $data = $request->only('email','password');
-    //     if(\Auth::attempt($data)){
-    //             return redirect()->route('page.index');
-    //     }else{
-    //         $loi = "Sai tài khoản hoặc mật khẩu";
-    //         return view('auth.login',compact('loi'));
-    //     }
-    // }
+    
     /**
      * Display a listing of the resource.
      *

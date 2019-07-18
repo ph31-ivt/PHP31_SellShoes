@@ -10,6 +10,7 @@ $(document).ready(function(){
 
 	$('.notification').hide();
 
+	// start add image
 	$('#save').click(function(e){
 		e.preventDefault();
 		var name = $('#formImage input[name="name"]').val();
@@ -121,21 +122,10 @@ $(document).ready(function(){
 						}else{
 							alert(data.dataSuccess);
 						}
-						
 					}
 				});
-
 		});
-
-		$("#close_Edit").on("click", function(){
-			id=null;
-		});
-
 
 	});
-
-
-	
-
 });
 
